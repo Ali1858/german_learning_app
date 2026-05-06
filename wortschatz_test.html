@@ -766,7 +766,7 @@ var AppBundle = (() => {
       const history = await storageGet(key) || [];
       history.push(attempt);
       await storageSet(key, history);
-      onEnd({ finalScores, attempt, questions });
+      onEnd({ finalScores, attempt, questions, answers });
     }, [ended, scores, answers, questions, testData, mode, studentName, onEnd]);
     useEffect(() => {
       if (mode !== "test" || ended) return;
@@ -858,7 +858,8 @@ var AppBundle = (() => {
     ));
   }
   function ResultsScreen({ result, onHome }) {
-    const { finalScores, attempt, questions } = result;
+    const { finalScores, attempt, questions, answers } = result;
+    const incorrectQs = questions.filter((q) => { const ans = answers?.[q.id]; const hasAns = ans !== undefined && ans !== null && ans !== "" && (typeof ans !== "object" || Object.keys(ans).length > 0); return hasAns && (finalScores[q.id] ?? 0) < 0.75; });
     const pct = attempt.percentage;
     const teilKeys = Object.keys(attempt.byTeil);
     const teilBarData = teilKeys.map((k) => ({
@@ -911,7 +912,7 @@ var AppBundle = (() => {
         fontFamily: fontMono,
         color: sc >= 0.75 ? T.good : sc >= 0.4 ? T.mid : T.bad
       } }, Math.round(sc * 100), "%"));
-    }))), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center", paddingBottom: 40 } }, /* @__PURE__ */ React.createElement(Btn, { onClick: onHome }, "\u2190 Zur\xFCck zur Startseite"))));
+    }))), incorrectQs.length > 0 && /* @__PURE__ */ React.createElement(Card, { style: { padding: 24, marginBottom: 20 } }, /* @__PURE__ */ React.createElement("h3", { style: { fontFamily: font, fontSize: 16, color: T.text, margin: "0 0 14px" } }, "\u274C Fehler-\xDCberpr\xFCfung (", incorrectQs.length, ")"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 16 } }, incorrectQs.map((q) => { const ak = q.answer_key; const correctDisplay = ak?.answers ? Object.entries(ak.answers).map(([k, v]) => `[${k}] ${v.abbreviation || v.case}`).join("  ") : (ak?.answer || "\u2014"); const userAns = answers?.[q.id]; const userDisplay = (!userAns && userAns !== 0) ? "(keine Antwort)" : (q.type === "case_identification" && typeof userAns === "object") ? (Object.entries(userAns).map(([k, v]) => `[${k}] ${v}`).join("  ") || "(keine Antwort)") : String(userAns); return /* @__PURE__ */ React.createElement("div", { key: q.id, style: { padding: 16, borderRadius: radius, background: T.badSoft, border: `1px solid ${T.bad}22` } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "flex-start", gap: 10, marginBottom: 10 } }, /* @__PURE__ */ React.createElement("span", { style: { width: 26, height: 26, borderRadius: 6, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 700, fontFamily: fontMono, flexShrink: 0, background: T.badSoft, color: T.bad, border: `1px solid ${T.bad}44` } }, q.id), /* @__PURE__ */ React.createElement("p", { style: { fontSize: 15, lineHeight: 1.6, color: T.text, fontFamily: font, margin: 0 } }, q.sentence)), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 6, marginBottom: (ak?.why || ak?.pitfall || ak?.grammar_rule) ? 10 : 0 } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: 8, alignItems: "baseline" } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: 11, fontWeight: 700, color: T.bad, textTransform: "uppercase", letterSpacing: 0.5, flexShrink: 0 } }, "Deine Antwort:"), /* @__PURE__ */ React.createElement("span", { style: { fontSize: 14, fontFamily: fontMono, color: T.bad } }, userDisplay)), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: 8, alignItems: "baseline" } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: 11, fontWeight: 700, color: T.good, textTransform: "uppercase", letterSpacing: 0.5, flexShrink: 0 } }, "Richtige Antwort:"), /* @__PURE__ */ React.createElement("span", { style: { fontSize: 14, fontFamily: fontMono, color: T.good, fontWeight: 700 } }, correctDisplay))), ak?.why && /* @__PURE__ */ React.createElement("p", { style: { fontSize: 12, color: T.text, margin: "6px 0 0", lineHeight: 1.6, opacity: 0.8 } }, /* @__PURE__ */ React.createElement("strong", null, "Warum: "), ak.why), ak?.grammar_rule && /* @__PURE__ */ React.createElement("div", { style: { marginTop: 6, padding: "6px 10px", background: `${T.white}88`, borderRadius: 8, fontSize: 11, color: T.textSoft, fontFamily: fontMono } }, "\uD83D\uDCD0 ", ak.grammar_rule)); }))), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center", paddingBottom: 40 } }, /* @__PURE__ */ React.createElement(Btn, { onClick: onHome }, "\u2190 Zur\xFCck zur Startseite"))));
   }
   function App() {
     const [screen, setScreen] = useState("welcome");
