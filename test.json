@@ -1,0 +1,1371 @@
+{
+  "test_meta": {
+    "title": "DEUTSCH A2 — ÜBUNGSTEST",
+    "total_questions": 60,
+    "topics": [
+      "Grammatik",
+      "Wortschatz",
+      "Übersetzung"
+    ],
+    "theme": "Friends & The Big Bang Theory",
+    "note": "Fiktive Szenarien basierend auf den Serien"
+  },
+  "teile": [
+    {
+      "teil_id": "A",
+      "teil_title": "Teil A — Fälle, Wortschatz & Deklination",
+      "teil_description": "Fülle die Lücken aus. Achte auf den richtigen Fall (Kasus), Artikel, Adjektivendung oder das passende Vokabular. Das grammatische Geschlecht wird als Hinweis angegeben.",
+      "question_range": "Q1–Q25",
+      "questions": [
+        {
+          "id": 1,
+          "type": "fill_in_the_blank",
+          "sentence": "Sheldon gibt ______ (sein Freund, m.) einen langen Vortrag über Physik.",
+          "hint": "Dativ — wem gibt Sheldon den Vortrag?",
+          "options": null,
+          "prompt_info": {
+            "base_form": "sein Freund",
+            "gender": "m."
+          },
+          "answer_key": {
+            "answer": "seinem Freund",
+            "why": "The verb 'geben' (to give) requires a dative object for the recipient (to whom?). Since 'Freund' is masculine, the possessive 'sein' changes to 'seinem' in the dative case.",
+            "pitfall": "Many students write 'seinen Freund' (accusative) because they confuse the direct object with the indirect object. Remember: the lecture (Vortrag) is what's being given (accusative), and the friend is who receives it (dative).",
+            "grammar_rule": "Dativ — masculine possessive: sein → seinem"
+          }
+        },
+        {
+          "id": 2,
+          "type": "fill_in_the_blank",
+          "sentence": "Monica hat ______ (eine neue Küche, f.) in ihrer Wohnung bekommen.",
+          "hint": "Akkusativ — was hat Monica bekommen?",
+          "options": null,
+          "prompt_info": {
+            "base_form": "eine neue Küche",
+            "gender": "f."
+          },
+          "answer_key": {
+            "answer": "eine neue Küche",
+            "why": "'Bekommen' (to receive) takes an accusative object (what did she get?). Feminine accusative is identical to nominative: 'eine neue Küche' stays unchanged.",
+            "pitfall": "Students sometimes write 'einer neuen Küche' (dative) because they think 'bekommen' works like 'helfen.' It doesn't — 'bekommen' always takes accusative.",
+            "grammar_rule": "Akkusativ — feminine accusative = nominative: eine + Adj-e + Nomen"
+          }
+        },
+        {
+          "id": 3,
+          "type": "fill_in_the_blank",
+          "sentence": "Das Experiment ______ (der Professor, m.) war erfolgreich.",
+          "hint": "Genitiv — wessen Experiment?",
+          "options": null,
+          "prompt_info": {
+            "base_form": "der Professor",
+            "gender": "m."
+          },
+          "answer_key": {
+            "answer": "des Professors",
+            "why": "This is genitive (whose experiment?). Masculine genitive: 'der' becomes 'des' and the noun adds '-s' or '-es.' 'Professor' follows n-declension so it becomes 'Professors.'",
+            "pitfall": "Students often forget to add '-s' to the noun. In genitive masculine/neuter, both the article AND the noun change. Writing 'des Professor' (no -s) is a very common mistake.",
+            "grammar_rule": "Genitiv — masculine: der → des + Nomen adds -s/-es"
+          }
+        },
+        {
+          "id": 4,
+          "type": "fill_in_the_blank",
+          "sentence": "Joey fragt Rachel: „Kannst du mir ______ (das Sandwich, n.) bringen?“",
+          "hint": "Akkusativ — was soll Rachel bringen?",
+          "options": null,
+          "prompt_info": {
+            "base_form": "das Sandwich",
+            "gender": "n."
+          },
+          "answer_key": {
+            "answer": "das Sandwich",
+            "why": "'Bringen' takes an accusative object (what should she bring?). Neuter accusative is the same as nominative: 'das Sandwich.'",
+            "pitfall": "Some students write 'dem Sandwich' (dative) because they see 'mir' (dative) and think everything should be dative. But 'mir' is the indirect object (to whom), while the sandwich is the direct object (what).",
+            "grammar_rule": "Akkusativ — neuter accusative = nominative: das + Nomen"
+          }
+        },
+        {
+          "id": 5,
+          "type": "fill_in_the_blank",
+          "sentence": "Penny arbeitet in ______ (das Restaurant, n.) neben der Universität.",
+          "hint": "Dativ — \"in\" + wo? = Dativ",
+          "options": null,
+          "prompt_info": {
+            "base_form": "das Restaurant",
+            "gender": "n."
+          },
+          "answer_key": {
+            "answer": "dem Restaurant",
+            "why": "The preposition 'in' is a two-way preposition. Here it answers 'where?' (location, not direction), so it takes dative. Neuter dative: 'das' becomes 'dem.'",
+            "pitfall": "Students who write 'das Restaurant' forgot the two-way preposition rule. If you're describing WHERE someone is (location), use dative. If you're describing WHERE TO someone is going (direction), use accusative.",
+            "grammar_rule": "Wechselpräposition 'in' + Wo? = Dativ — neuter: das → dem"
+          }
+        },
+        {
+          "id": 6,
+          "type": "fill_in_the_blank",
+          "sentence": "Leonard schreibt ______ (ein langer Brief, m.) an seine Mutter.",
+          "hint": "Akkusativ — was schreibt Leonard?",
+          "options": null,
+          "prompt_info": {
+            "base_form": "ein langer Brief",
+            "gender": "m."
+          },
+          "answer_key": {
+            "answer": "einen langen Brief",
+            "why": "'Schreiben' takes accusative (what is he writing?). Masculine accusative: 'ein' becomes 'einen' and the adjective gets '-en' ending.",
+            "pitfall": "Writing 'ein langer Brief' (nominative) is the most common error. In masculine accusative, BOTH the article changes (ein → einen) AND the adjective gets -en (langer → langen). This is the ONLY gender where accusative differs from nominative with indefinite articles.",
+            "grammar_rule": "Akkusativ — masculine indefinite: ein → einen, Adj gets -en"
+          }
+        },
+        {
+          "id": 7,
+          "type": "multiple_choice",
+          "sentence": "Ross ist ______ auf seine Dinosaurier-Sammlung.",
+          "hint": "Vokabular — welches Adjektiv passt?",
+          "options": [
+            "stolz",
+            "traurig",
+            "müde"
+          ],
+          "prompt_info": null,
+          "answer_key": {
+            "answer": "stolz",
+            "why": "'Stolz auf' means 'proud of.' Ross is proud of his dinosaur collection — this fits the context perfectly.",
+            "pitfall": "'Traurig' (sad) and 'müde' (tired) don't fit logically. Also note: 'stolz' requires the preposition 'auf' + accusative. This is a fixed combination you need to memorize.",
+            "grammar_rule": "Adjektiv + Präposition: stolz auf + Akkusativ"
+          }
+        },
+        {
+          "id": 8,
+          "type": "fill_in_the_blank",
+          "sentence": "Raj kann nicht mit ______ (die Frau, f.) sprechen, weil er schüchtern ist.",
+          "hint": "Dativ — \"mit\" verlangt Dativ",
+          "options": null,
+          "prompt_info": {
+            "base_form": "die Frau",
+            "gender": "f."
+          },
+          "answer_key": {
+            "answer": "der Frau",
+            "why": "'Mit' always takes dative. Feminine dative: 'die' becomes 'der.'",
+            "pitfall": "Writing 'die Frau' is very common because students forget that 'mit' is a pure dative preposition. Unlike two-way prepositions, 'mit' is ALWAYS dative, no exceptions.",
+            "grammar_rule": "Dativ — 'mit' verlangt immer Dativ; feminine: die → der"
+          }
+        },
+        {
+          "id": 9,
+          "type": "fill_in_the_blank",
+          "sentence": "Howard hat seiner Mutter ______ (ein teur__ Geschenk, n.) zum Geburtstag gekauft.",
+          "hint": "Akkusativ + Adjektivendung — ein + Adjektiv + Neutrum Akk.",
+          "options": null,
+          "prompt_info": {
+            "base_form": "ein teures Geschenk",
+            "gender": "n."
+          },
+          "answer_key": {
+            "answer": "ein teures Geschenk",
+            "why": "'Kaufen' takes accusative for the thing bought (what?). Neuter accusative with indefinite article: 'ein' stays 'ein,' but the adjective must show the gender, so it gets '-es' (teures).",
+            "pitfall": "Students often write 'ein teuren Geschenk' or 'ein teueres Geschenk.' With indefinite articles in neuter accusative/nominative, the adjective takes the strong ending '-es' because 'ein' doesn't show gender. Also: 'teuer' drops the inner 'e' when declined → 'teures' not 'teueres.'",
+            "grammar_rule": "Akkusativ — neuter indefinite: ein + Adj-es + Nomen; 'teuer' drops inner -e-"
+          }
+        },
+        {
+          "id": 10,
+          "type": "fill_in_the_blank",
+          "sentence": "Chandler findet den ______ (neu__ Job, m.) sehr langweilig.",
+          "hint": "Akkusativ + Adjektivendung — den + Adjektiv + Maskulin Akk.",
+          "options": null,
+          "prompt_info": {
+            "base_form": "neuen Job",
+            "gender": "m."
+          },
+          "answer_key": {
+            "answer": "neuen Job",
+            "why": "'Den' is already the masculine accusative definite article. After a definite article in accusative masculine, the adjective always takes '-en.'",
+            "pitfall": "Writing 'neuer' or 'neues' shows confusion about adjective endings after definite articles. Rule: after der/die/das (and den/dem/des), adjective endings are almost always '-e' or '-en.' In accusative masculine specifically, it's always '-en.'",
+            "grammar_rule": "Akkusativ — definite article masculine: den + Adj-en + Nomen"
+          }
+        },
+        {
+          "id": 11,
+          "type": "fill_in_the_blank",
+          "sentence": "Amy hat Sheldon ______ (eine schön__ Krawatte, f.) geschenkt.",
+          "hint": "Akkusativ + Adjektivendung — eine + Adjektiv + Feminin Akk.",
+          "options": null,
+          "prompt_info": {
+            "base_form": "eine schöne Krawatte",
+            "gender": "f."
+          },
+          "answer_key": {
+            "answer": "eine schöne Krawatte",
+            "why": "'Schenken' takes accusative for the gift (what was given?). Feminine accusative with 'eine': the adjective takes '-e' ending.",
+            "pitfall": "Writing 'einer schönen Krawatte' (dative) is wrong here. Sheldon is the dative (to whom), and the tie is accusative (what). Don't confuse the two objects.",
+            "grammar_rule": "Akkusativ — feminine indefinite: eine + Adj-e + Nomen"
+          }
+        },
+        {
+          "id": 12,
+          "type": "fill_in_the_blank",
+          "sentence": "Phoebe singt ein Lied für ______ (die klein__ Katze, f.).",
+          "hint": "Akkusativ — \"für\" verlangt Akkusativ + Adjektivendung",
+          "options": null,
+          "prompt_info": {
+            "base_form": "die kleine Katze",
+            "gender": "f."
+          },
+          "answer_key": {
+            "answer": "die kleine Katze",
+            "why": "'Für' always takes accusative. Feminine accusative with definite article: 'die' stays 'die,' adjective takes '-e.'",
+            "pitfall": "Some students write 'der kleinen Katze' (dative) because singing 'for' someone feels like an indirect object. But 'für' is grammatically always accusative in German, regardless of the English meaning.",
+            "grammar_rule": "Akkusativ — 'für' verlangt immer Akkusativ; feminine definite: die + Adj-e + Nomen"
+          }
+        },
+        {
+          "id": 13,
+          "type": "fill_in_the_blank",
+          "sentence": "Monica und Chandler ziehen in ______ (ein groß__ Haus, n.) auf dem Land.",
+          "hint": "Akkusativ — \"in\" + wohin? = Akkusativ + Adjektivendung",
+          "options": null,
+          "prompt_info": {
+            "base_form": "ein großes Haus",
+            "gender": "n."
+          },
+          "answer_key": {
+            "answer": "ein großes Haus",
+            "why": "'In' + direction (wohin? = where to?) takes accusative. They're moving INTO the house. Neuter accusative with 'ein': adjective takes '-es' (strong ending).",
+            "pitfall": "Writing 'einem großen Haus' (dative) would mean they already live there. The verb 'ziehen' (to move) implies direction/change of location, so it's accusative. This is a classic two-way preposition trap.",
+            "grammar_rule": "Wechselpräposition 'in' + Wohin? = Akkusativ — neuter indefinite: ein + Adj-es + Nomen"
+          }
+        },
+        {
+          "id": 14,
+          "type": "fill_in_the_blank",
+          "sentence": "Sheldon fährt nicht gern mit ______ (der Bus, m.).",
+          "hint": "Dativ — \"mit\" verlangt Dativ",
+          "options": null,
+          "prompt_info": {
+            "base_form": "der Bus",
+            "gender": "m."
+          },
+          "answer_key": {
+            "answer": "dem Bus",
+            "why": "'Mit' always requires dative. Masculine dative: 'der' becomes 'dem.'",
+            "pitfall": "Writing 'den Bus' (accusative) is wrong. 'Mit' is one of the dative-only prepositions (aus, bei, mit, nach, seit, von, zu). Memorize this list!",
+            "grammar_rule": "Dativ — 'mit' verlangt immer Dativ; masculine: der → dem"
+          }
+        },
+        {
+          "id": 15,
+          "type": "multiple_choice",
+          "sentence": "Rachel hat ihre ______ bei Ralph Lauren verloren.",
+          "hint": "Vokabular — welches Wort passt im Kontext?",
+          "options": [
+            "Arbeitsstelle",
+            "Wohnung",
+            "Freundschaft"
+          ],
+          "prompt_info": null,
+          "answer_key": {
+            "answer": "Arbeitsstelle",
+            "why": "'Arbeitsstelle' means 'job/position.' Rachel losing her job at Ralph Lauren fits the context. 'Wohnung' (apartment) and 'Freundschaft' (friendship) don't connect to Ralph Lauren.",
+            "pitfall": "If you don't know 'Arbeitsstelle,' you might guess 'Wohnung.' Build your vocabulary around work-related words: der Job, die Arbeit, die Stelle, die Arbeitsstelle, der Beruf — they all relate to work but with slightly different nuances.",
+            "grammar_rule": "Wortschatz — Arbeitsstelle (f.) = job/position"
+          }
+        },
+        {
+          "id": 16,
+          "type": "fill_in_the_blank",
+          "sentence": "Leonard hilft ______ (die nett__ Nachbarin, f.) mit dem Umzug.",
+          "hint": "Dativ + Adjektivendung — wem hilft Leonard?",
+          "options": null,
+          "prompt_info": {
+            "base_form": "die nette Nachbarin",
+            "gender": "f."
+          },
+          "answer_key": {
+            "answer": "der netten Nachbarin",
+            "why": "'Helfen' is one of the important verbs that takes dative (not accusative!). Feminine dative: 'die' becomes 'der,' and the adjective takes '-en.'",
+            "pitfall": "Writing 'die nette Nachbarin' (accusative) is the #1 mistake. 'Helfen' is a dative verb. Other common dative verbs to memorize: danken, gefallen, gehören, gratulieren, passen, schmecken.",
+            "grammar_rule": "Dativ — 'helfen' verlangt Dativ; feminine definite: die → der + Adj-en + Nomen"
+          }
+        },
+        {
+          "id": 17,
+          "type": "fill_in_the_blank",
+          "sentence": "Während ______ (das Abendessen, n.) erzählt Ross eine langweilige Geschichte.",
+          "hint": "Genitiv — \"während\" verlangt Genitiv",
+          "options": null,
+          "prompt_info": {
+            "base_form": "das Abendessen",
+            "gender": "n."
+          },
+          "answer_key": {
+            "answer": "des Abendessens",
+            "why": "'Während' (during) is a genitive preposition. Neuter genitive: 'das' becomes 'des' and the noun adds '-s.'",
+            "pitfall": "Many A2 students haven't fully internalized genitive prepositions yet. Key ones: während (during), wegen (because of), trotz (despite), anstatt/statt (instead of), außerhalb (outside of).",
+            "grammar_rule": "Genitiv — 'während' verlangt Genitiv; neuter: das → des + Nomen-s"
+          }
+        },
+        {
+          "id": 18,
+          "type": "multiple_choice",
+          "sentence": "Joey hat wieder kein Geld und muss sich etwas ______.",
+          "hint": "Vokabular — was macht man, wenn man kein Geld hat?",
+          "options": [
+            "leihen",
+            "kochen",
+            "waschen"
+          ],
+          "prompt_info": null,
+          "answer_key": {
+            "answer": "leihen",
+            "why": "'Sich etwas leihen' means 'to borrow something.' If you have no money, you borrow. 'Kochen' (cook) and 'waschen' (wash) don't solve the money problem.",
+            "pitfall": "Don't confuse 'leihen' (to lend/borrow) with 'ausleihen' (to borrow from a library). Also note: in German, 'leihen' can mean both 'to lend' AND 'to borrow' depending on context. 'Sich etwas leihen' = to borrow.",
+            "grammar_rule": "Wortschatz — sich etwas leihen = to borrow something"
+          }
+        },
+        {
+          "id": 19,
+          "type": "fill_in_the_blank",
+          "sentence": "Bernadette schenkt ______ (ihr klein__ Sohn, m.) ein Spielzeug.",
+          "hint": "Dativ + Adjektivendung — wem schenkt sie?",
+          "options": null,
+          "prompt_info": {
+            "base_form": "ihr kleiner Sohn",
+            "gender": "m."
+          },
+          "answer_key": {
+            "answer": "ihrem kleinen Sohn",
+            "why": "'Schenken' takes dative for the recipient (to whom?). Masculine dative: 'ihr' becomes 'ihrem,' adjective takes '-en.'",
+            "pitfall": "Writing 'ihren kleinen Sohn' (accusative) confuses the gift with the recipient. The toy is accusative (what), the son is dative (to whom). In dative, ALL adjective endings are '-en' — this is actually the easiest case for adjectives!",
+            "grammar_rule": "Dativ — masculine possessive: ihr → ihrem + Adj-en + Nomen"
+          }
+        },
+        {
+          "id": 20,
+          "type": "fill_in_the_blank",
+          "sentence": "Trotz ______ (das schlecht__ Wetter, n.) gehen die Freunde in den Central Perk.",
+          "hint": "Genitiv — \"trotz\" verlangt Genitiv + Adjektivendung",
+          "options": null,
+          "prompt_info": {
+            "base_form": "das schlechte Wetter",
+            "gender": "n."
+          },
+          "answer_key": {
+            "answer": "des schlechten Wetters",
+            "why": "'Trotz' (despite) takes genitive. Neuter genitive: 'das' → 'des,' adjective → '-en,' noun adds '-s.'",
+            "pitfall": "Forgetting to change ALL three parts (article + adjective + noun ending) is very common. In genitive neuter: des + schlechten + Wetters. Three changes, not just one!",
+            "grammar_rule": "Genitiv — 'trotz' verlangt Genitiv; neuter: des + Adj-en + Nomen-s"
+          }
+        },
+        {
+          "id": 21,
+          "type": "multiple_choice",
+          "sentence": "Sheldon ist ______ auf Leonard, weil er sein Essen gegessen hat.",
+          "hint": "Vokabular — welches Adjektiv passt?",
+          "options": [
+            "eifersüchtig",
+            "wütend",
+            "begeistert"
+          ],
+          "prompt_info": null,
+          "answer_key": {
+            "answer": "wütend",
+            "why": "'Wütend' means 'angry/furious.' Someone ate his food → he's angry. 'Eifersüchtig' (jealous) and 'begeistert' (excited/enthusiastic) don't fit.",
+            "pitfall": "'Eifersüchtig' is tempting because it also uses 'auf,' but jealousy is about wanting what someone else has, not about anger over stolen food. Context matters for vocabulary choices.",
+            "grammar_rule": "Wortschatz — wütend auf + Akkusativ = angry at"
+          }
+        },
+        {
+          "id": 22,
+          "type": "fill_in_the_blank",
+          "sentence": "Monica backt ______ (ein fantastisch__ Kuchen, m.) für die Party.",
+          "hint": "Akkusativ + Adjektivendung — was backt Monica?",
+          "options": null,
+          "prompt_info": {
+            "base_form": "ein fantastischer Kuchen",
+            "gender": "m."
+          },
+          "answer_key": {
+            "answer": "einen fantastischen Kuchen",
+            "why": "'Backen' takes accusative (what is she baking?). Masculine accusative with 'ein': 'ein' → 'einen,' adjective takes '-en.'",
+            "pitfall": "Writing 'ein fantastischer Kuchen' (nominative) ignores the accusative requirement. Masculine is the ONLY gender where you can see the difference between nominative and accusative with articles.",
+            "grammar_rule": "Akkusativ — masculine indefinite: ein → einen + Adj-en + Nomen"
+          }
+        },
+        {
+          "id": 23,
+          "type": "fill_in_the_blank",
+          "sentence": "Die Katze gehört ______ (die alt__ Nachbarin, f.) von Phoebe.",
+          "hint": "Dativ + Adjektivendung — \"gehören\" verlangt Dativ",
+          "options": null,
+          "prompt_info": {
+            "base_form": "die alte Nachbarin",
+            "gender": "f."
+          },
+          "answer_key": {
+            "answer": "der alten Nachbarin",
+            "why": "'Gehören' (to belong to) takes dative. Feminine dative: 'die' → 'der,' adjective takes '-en.'",
+            "pitfall": "'Gehören' is another dative verb that students often use with accusative. Think of it as 'The cat belongs TO the neighbor' — the 'to' signals dative.",
+            "grammar_rule": "Dativ — 'gehören' verlangt Dativ; feminine definite: die → der + Adj-en + Nomen"
+          }
+        },
+        {
+          "id": 24,
+          "type": "fill_in_the_blank",
+          "sentence": "Raj ist wegen ______ (die Trennung, f.) von seiner Freundin sehr traurig.",
+          "hint": "Genitiv — \"wegen\" verlangt Genitiv",
+          "options": null,
+          "prompt_info": {
+            "base_form": "die Trennung",
+            "gender": "f."
+          },
+          "answer_key": {
+            "answer": "der Trennung",
+            "why": "'Wegen' (because of) takes genitive. Feminine genitive: 'die' becomes 'der.' The noun doesn't change in feminine genitive.",
+            "pitfall": "Students might write 'die Trennung' (nominative/accusative) because feminine genitive looks identical to feminine dative ('der'). This is correct — they do look the same! You identify it as genitive from the preposition 'wegen.'",
+            "grammar_rule": "Genitiv — 'wegen' verlangt Genitiv; feminine: die → der"
+          }
+        },
+        {
+          "id": 25,
+          "type": "fill_in_the_blank",
+          "sentence": "Chandler möchte ______ (sein stressig__ Beruf, m.) endlich wechseln.",
+          "hint": "Akkusativ + Adjektivendung — was möchte Chandler wechseln?",
+          "options": null,
+          "prompt_info": {
+            "base_form": "sein stressiger Beruf",
+            "gender": "m."
+          },
+          "answer_key": {
+            "answer": "seinen stressigen Beruf",
+            "why": "'Wechseln' (to change/switch) takes accusative (what does he want to change?). Masculine accusative: 'sein' → 'seinen,' adjective takes '-en.'",
+            "pitfall": "Writing 'seinem stressigen Beruf' (dative) is wrong. He wants to change THE JOB (direct object). There's no indirect object here. When in doubt, ask: 'What is being acted upon?' — that's your accusative.",
+            "grammar_rule": "Akkusativ — masculine possessive: sein → seinen + Adj-en + Nomen"
+          }
+        }
+      ]
+    },
+    {
+      "teil_id": "B",
+      "teil_title": "Teil B — Konjugation",
+      "teil_description": "Konjugiere das Verb in Klammern in der richtigen Form und Zeitform (Präsens, Perfekt oder Präteritum). Die Zeitform wird angegeben.",
+      "question_range": "Q26–Q40",
+      "questions": [
+        {
+          "id": 26,
+          "type": "conjugation",
+          "sentence": "Sheldon ______ (wissen — Präsens) die Antwort auf jede Frage.",
+          "hint": "Unregelmäßiges Verb — Präsens, 3. Person Singular",
+          "options": null,
+          "prompt_info": {
+            "verb": "wissen",
+            "tense": "Präsens",
+            "person": "3. Person Singular"
+          },
+          "answer_key": {
+            "answer": "weiß",
+            "why": "'Wissen' is irregular in the present tense. It conjugates like a modal verb in singular: ich weiß, du weißt, er/sie/es weiß. The stem changes completely from 'wiss-' to 'weiß-' in singular.",
+            "pitfall": "Writing 'wisst' or 'wiss' shows you're treating it as regular. 'Wissen' is one of the trickiest verbs because it looks regular but conjugates like a Präteritum-Präsens verb (similar pattern to modal verbs in singular).",
+            "grammar_rule": "Unregelmäßig — wissen: ich weiß, du weißt, er/sie/es weiß"
+          }
+        },
+        {
+          "id": 27,
+          "type": "conjugation",
+          "sentence": "Joey und Chandler ______ (sehen — Perfekt) gestern einen lustigen Film.",
+          "hint": "Perfekt mit \"haben\" — Partizip II von \"sehen\"?",
+          "options": null,
+          "prompt_info": {
+            "verb": "sehen",
+            "tense": "Perfekt",
+            "person": "3. Person Plural"
+          },
+          "answer_key": {
+            "answer": "haben gesehen",
+            "why": "Perfekt = auxiliary + past participle. 'Sehen' uses 'haben' (no movement involved). Past participle: ge- + stem + -en = gesehen.",
+            "pitfall": "Some students write 'haben geseht' applying weak verb rules (-t ending). 'Sehen' is a strong verb: sehen → gesehen. Strong verbs keep the -en ending in the past participle.",
+            "grammar_rule": "Perfekt — starkes Verb: haben + ge-seh-en"
+          }
+        },
+        {
+          "id": 28,
+          "type": "conjugation",
+          "sentence": "Monica ______ (müssen — Präteritum) das ganze Haus putzen.",
+          "hint": "Modalverb im Präteritum — 3. Person Singular",
+          "options": null,
+          "prompt_info": {
+            "verb": "müssen",
+            "tense": "Präteritum",
+            "person": "3. Person Singular"
+          },
+          "answer_key": {
+            "answer": "musste",
+            "why": "Modal verbs in Präteritum lose their umlaut. Müssen: ü → u. Then add Präteritum marker '-te': musste. No personal ending for 1st/3rd person singular.",
+            "pitfall": "Writing 'müsste' adds the umlaut back — but that's Konjunktiv II (subjunctive), not Präteritum! Präteritum of modals ALWAYS drops the umlaut: müssen→musste, können→konnte, dürfen→durfte.",
+            "grammar_rule": "Präteritum Modalverb — müssen: ü → u + -te = musste"
+          }
+        },
+        {
+          "id": 29,
+          "type": "conjugation",
+          "sentence": "Leonard und Penny ______ (fahren — Perfekt) letztes Wochenende nach San Francisco.",
+          "hint": "Perfekt mit \"sein\" — Partizip II von \"fahren\"?",
+          "options": null,
+          "prompt_info": {
+            "verb": "fahren",
+            "tense": "Perfekt",
+            "person": "3. Person Plural"
+          },
+          "answer_key": {
+            "answer": "sind gefahren",
+            "why": "'Fahren' indicates a change of location (movement from A to B), so it uses 'sein' as the auxiliary. Past participle: gefahren (strong verb, a → a).",
+            "pitfall": "Writing 'haben gefahren' is the classic error. The rule: verbs of movement/change of state use 'sein' (gehen, fahren, fliegen, kommen, werden, sterben, etc.). Verbs of action without movement use 'haben.'",
+            "grammar_rule": "Perfekt mit 'sein' — Bewegungsverb: sind + ge-fahr-en"
+          }
+        },
+        {
+          "id": 30,
+          "type": "conjugation",
+          "sentence": "Ross ______ (sprechen — Präsens) oft über seine Arbeit im Museum.",
+          "hint": "Unregelmäßiges Verb — Vokalwechsel bei 3. Person Singular?",
+          "options": null,
+          "prompt_info": {
+            "verb": "sprechen",
+            "tense": "Präsens",
+            "person": "3. Person Singular"
+          },
+          "answer_key": {
+            "answer": "spricht",
+            "why": "'Sprechen' has a vowel change in 2nd and 3rd person singular: e → i. So: ich spreche, du sprichst, er/sie spricht.",
+            "pitfall": "Writing 'sprecht' applies the plural form to singular. The e→i change ONLY happens in du/er/sie/es forms, never in wir/ihr/sie.",
+            "grammar_rule": "Vokalwechsel e → i — sprechen: er/sie/es spricht"
+          }
+        },
+        {
+          "id": 31,
+          "type": "conjugation",
+          "sentence": "Phoebe ______ (können — Präteritum) früher nicht gut Gitarre spielen.",
+          "hint": "Modalverb im Präteritum — 3. Person Singular",
+          "options": null,
+          "prompt_info": {
+            "verb": "können",
+            "tense": "Präteritum",
+            "person": "3. Person Singular"
+          },
+          "answer_key": {
+            "answer": "konnte",
+            "why": "Können in Präteritum: drop the umlaut (ö → o), add -te. 3rd person singular: konnte (no additional ending).",
+            "pitfall": "Writing 'könnte' is Konjunktiv II (could/would be able to), not simple past. 'Konnte' = could (past fact). 'Könnte' = could (hypothetical). Big difference in meaning!",
+            "grammar_rule": "Präteritum Modalverb — können: ö → o + -te = konnte"
+          }
+        },
+        {
+          "id": 32,
+          "type": "conjugation",
+          "sentence": "Howard ______ (fliegen — Perfekt) einmal zur Raumstation.",
+          "hint": "Perfekt mit \"sein\" — Partizip II von \"fliegen\"?",
+          "options": null,
+          "prompt_info": {
+            "verb": "fliegen",
+            "tense": "Perfekt",
+            "person": "3. Person Singular"
+          },
+          "answer_key": {
+            "answer": "ist geflogen",
+            "why": "'Fliegen' = movement from A to B, so it uses 'sein.' Past participle: geflogen (strong verb, ie → o).",
+            "pitfall": "'Haben geflogen' is wrong because flying to the space station is clearly a change of location. Even 'fliegen' without a destination can use 'sein' when the focus is on movement.",
+            "grammar_rule": "Perfekt mit 'sein' — Bewegungsverb: ist + ge-flog-en"
+          }
+        },
+        {
+          "id": 33,
+          "type": "conjugation",
+          "sentence": "Rachel, ______ (lesen — Präsens) du gerade ein Modemagazin?",
+          "hint": "Unregelmäßiges Verb — Vokalwechsel bei \"du\"?",
+          "options": null,
+          "prompt_info": {
+            "verb": "lesen",
+            "tense": "Präsens",
+            "person": "2. Person Singular (du)"
+          },
+          "answer_key": {
+            "answer": "liest",
+            "why": "'Lesen' has a vowel change e → ie in the 'du' form: du liest. (Also in er/sie/es: liest.)",
+            "pitfall": "Writing 'lesst' treats it as regular. 'Lesen' follows the e→ie pattern (like sehen → siehst, empfehlen → empfiehlst). Note: the 's' in the stem merges with the '-st' ending, giving just 'liest' not 'liesst.'",
+            "grammar_rule": "Vokalwechsel e → ie — lesen: du liest"
+          }
+        },
+        {
+          "id": 34,
+          "type": "conjugation",
+          "sentence": "Wir ______ (einladen — Perfekt) alle Freunde zur Party.",
+          "hint": "Trennbares Verb im Perfekt — Partizip II von \"einladen\"?",
+          "options": null,
+          "prompt_info": {
+            "verb": "einladen",
+            "tense": "Perfekt",
+            "person": "1. Person Plural (wir)"
+          },
+          "answer_key": {
+            "answer": "haben eingeladen",
+            "why": "'Einladen' is a separable verb. In Perfekt, the 'ge-' goes between the prefix and the stem: ein-ge-laden. Auxiliary: 'haben' (no movement).",
+            "pitfall": "Writing 'haben geeinladen' or 'haben geladen ein' shows confusion about separable verb participles. The pattern is always: prefix + ge + stem participle = eingeladen (one word, ge- in the middle).",
+            "grammar_rule": "Perfekt trennbares Verb — ein|laden: haben + ein-ge-laden"
+          }
+        },
+        {
+          "id": 35,
+          "type": "conjugation",
+          "sentence": "Sheldon ______ (wollen — Präteritum) unbedingt den Nobelpreis gewinnen.",
+          "hint": "Modalverb im Präteritum — 3. Person Singular",
+          "options": null,
+          "prompt_info": {
+            "verb": "wollen",
+            "tense": "Präteritum",
+            "person": "3. Person Singular"
+          },
+          "answer_key": {
+            "answer": "wollte",
+            "why": "'Wollen' in Präteritum: wollte. This modal has no umlaut to drop (wollen already has 'o'), so it simply adds '-te.'",
+            "pitfall": "This one is straightforward, but students sometimes write 'wollten' (plural) for a singular subject. Remember: 1st and 3rd person singular Präteritum of modals have NO personal ending.",
+            "grammar_rule": "Präteritum Modalverb — wollen: woll + -te = wollte"
+          }
+        },
+        {
+          "id": 36,
+          "type": "conjugation",
+          "sentence": "Amy ______ (werden — Präsens) nächstes Jahr Professorin.",
+          "hint": "Unregelmäßiges Verb — 3. Person Singular",
+          "options": null,
+          "prompt_info": {
+            "verb": "werden",
+            "tense": "Präsens",
+            "person": "3. Person Singular"
+          },
+          "answer_key": {
+            "answer": "wird",
+            "why": "'Werden' is irregular: ich werde, du wirst, er/sie/es wird. The 'e' changes to 'i' in 2nd/3rd person singular.",
+            "pitfall": "Writing 'werdet' (ihr-form) or 'werde' (ich-form) for a 3rd person subject. 'Werden' is used here as a main verb meaning 'to become,' not as a future auxiliary.",
+            "grammar_rule": "Unregelmäßig — werden: er/sie/es wird (e → i)"
+          }
+        },
+        {
+          "id": 37,
+          "type": "conjugation",
+          "sentence": "Joey ______ (essen — Präsens) am liebsten Pizza.",
+          "hint": "Unregelmäßiges Verb — Vokalwechsel bei 3. Person Singular?",
+          "options": null,
+          "prompt_info": {
+            "verb": "essen",
+            "tense": "Präsens",
+            "person": "3. Person Singular"
+          },
+          "answer_key": {
+            "answer": "isst",
+            "why": "'Essen' has vowel change e → i in 3rd person singular: er isst. The double 's' comes from the stem (ess-) merging with the -t ending pattern.",
+            "pitfall": "Writing 'esst' (ihr-form) instead of 'isst' is common. The vowel change e→i gives 'isst' for er/sie/es. Also, don't write 'ißt' — the old spelling with ß was replaced by 'ss' after the 1996 spelling reform.",
+            "grammar_rule": "Vokalwechsel e → i — essen: er/sie/es isst"
+          }
+        },
+        {
+          "id": 38,
+          "type": "conjugation",
+          "sentence": "Chandler und Monica ______ (sich kennenlernen — Perfekt) auf einer Thanksgiving-Party.",
+          "hint": "Reflexives trennbares Verb im Perfekt",
+          "options": null,
+          "prompt_info": {
+            "verb": "sich kennenlernen",
+            "tense": "Perfekt",
+            "person": "3. Person Plural"
+          },
+          "answer_key": {
+            "answer": "haben sich kennengelernt",
+            "why": "'Sich kennenlernen' is reflexive + separable. Perfekt: haben + sich + kennen-ge-lernt. 'Lernen' is weak, so the participle ends in '-t.'",
+            "pitfall": "Forgetting 'sich' or misplacing it. The reflexive pronoun goes right after the auxiliary: 'haben sich kennengelernt.' Also: 'kennengelernt' is one word with ge- in the middle.",
+            "grammar_rule": "Perfekt reflexiv + trennbar — haben + sich + kennen-ge-lernt"
+          }
+        },
+        {
+          "id": 39,
+          "type": "conjugation",
+          "sentence": "Bernadette ______ (anfangen — Perfekt) einen neuen Job im Labor.",
+          "hint": "Trennbares Verb im Perfekt — Partizip II von \"anfangen\"?",
+          "options": null,
+          "prompt_info": {
+            "verb": "anfangen",
+            "tense": "Perfekt",
+            "person": "3. Person Singular"
+          },
+          "answer_key": {
+            "answer": "hat angefangen",
+            "why": "'Anfangen' is separable. Perfekt: an-ge-fangen. Strong verb (fangen → gefangen, with a→a). Uses 'haben' (no movement).",
+            "pitfall": "Writing 'hat angefangt' applies weak verb rules to a strong verb. 'Fangen' is strong: fangen → fing → gefangen. The past participle keeps -en, not -t.",
+            "grammar_rule": "Perfekt trennbares starkes Verb — an|fangen: hat + an-ge-fangen"
+          }
+        },
+        {
+          "id": 40,
+          "type": "conjugation",
+          "sentence": "Raj ______ (dürfen — Präteritum) als Kind keinen Hund haben.",
+          "hint": "Modalverb im Präteritum — 3. Person Singular",
+          "options": null,
+          "prompt_info": {
+            "verb": "dürfen",
+            "tense": "Präteritum",
+            "person": "3. Person Singular"
+          },
+          "answer_key": {
+            "answer": "durfte",
+            "why": "Dürfen in Präteritum: umlaut drops (ü → u), add -te: durfte.",
+            "pitfall": "Writing 'dürfte' is Konjunktiv II (would be allowed to), not past tense. Same pattern as müssen/musste and können/konnte. Präteritum = no umlaut. Konjunktiv II = umlaut returns.",
+            "grammar_rule": "Präteritum Modalverb — dürfen: ü → u + -te = durfte"
+          }
+        }
+      ]
+    },
+    {
+      "teil_id": "C",
+      "teil_title": "Teil C — Übersetzung",
+      "teil_description": "Übersetze die Sätze. Sätze 41–45: Englisch → Deutsch. Sätze 46–50: Deutsch → Englisch. Translations don't need to be word-for-word; natural, grammatically correct versions are accepted.",
+      "question_range": "Q41–Q50",
+      "questions": [
+        {
+          "id": 41,
+          "type": "translation_en_to_de",
+          "sentence": "Joey doesn't share his food with anyone.",
+          "hint": "\"teilen\" = to share; \"mit\" + Dativ; \"niemandem\"",
+          "options": null,
+          "prompt_info": {
+            "direction": "Englisch → Deutsch",
+            "key_vocabulary": [
+              "teilen",
+              "mit + Dativ",
+              "niemandem"
+            ]
+          },
+          "answer_key": {
+            "answer": "Joey teilt sein Essen mit niemandem.",
+            "why": "'Teilen' = to share. 'Mit' always takes dative, so 'niemand' becomes 'niemandem.' 'Sein Essen' = his food (accusative, the thing being shared).",
+            "pitfall": "Writing 'mit niemand' (no dative ending) is technically accepted in spoken German but grammatically incomplete. At A2 level, always show the dative: niemandem. Also, don't write 'mit keinem' — that means 'with none (of a specific group)' which is slightly different.",
+            "grammar_rule": "'mit' + Dativ; niemand → niemandem"
+          }
+        },
+        {
+          "id": 42,
+          "type": "translation_en_to_de",
+          "sentence": "Sheldon has to knock on the door three times.",
+          "hint": "\"klopfen\" = to knock; \"müssen\" + Infinitiv am Ende",
+          "options": null,
+          "prompt_info": {
+            "direction": "Englisch → Deutsch",
+            "key_vocabulary": [
+              "klopfen",
+              "müssen",
+              "dreimal",
+              "an die Tür"
+            ]
+          },
+          "answer_key": {
+            "answer": "Sheldon muss dreimal an die Tür klopfen.",
+            "why": "'Müssen' + infinitive at the end. 'An die Tür' = accusative (direction: knocking toward the door). 'Dreimal' = three times. 'Klopfen' = to knock.",
+            "pitfall": "Putting 'klopfen' in the middle instead of at the end: 'Sheldon muss klopfen an die Tür' is wrong word order. With modal verbs, the infinitive ALWAYS goes to the end of the clause.",
+            "grammar_rule": "Modalverb + Infinitiv am Satzende; 'an' + Akkusativ (Richtung)"
+          }
+        },
+        {
+          "id": 43,
+          "type": "translation_en_to_de",
+          "sentence": "Monica cooked a delicious meal for her friends yesterday.",
+          "hint": "Perfekt; \"lecker\" = delicious; \"das Essen\" (n.) = meal",
+          "options": null,
+          "prompt_info": {
+            "direction": "Englisch → Deutsch",
+            "key_vocabulary": [
+              "kochen (Perfekt)",
+              "lecker",
+              "das Essen (n.)",
+              "für + Akkusativ"
+            ]
+          },
+          "answer_key": {
+            "answer": "Monica hat gestern ein leckeres Essen für ihre Freunde gekocht.",
+            "why": "Use Perfekt (standard for past events in spoken German). 'Lecker' = delicious. 'Für' + accusative. Time expression 'gestern' follows the verb or comes first.",
+            "pitfall": "Using Präteritum ('kochte') isn't wrong but sounds literary/formal. In everyday German, use Perfekt for past events. Also: 'ein leckeres Essen' not 'ein leckeren Essen' — Essen is neuter, so the adjective needs '-es' with indefinite article.",
+            "grammar_rule": "Perfekt für Vergangenheit; neuter Akkusativ: ein + Adj-es + Nomen"
+          }
+        },
+        {
+          "id": 44,
+          "type": "translation_en_to_de",
+          "sentence": "Penny is moving into Leonard's apartment next week.",
+          "hint": "\"einziehen\" (trennbar); \"die Wohnung\" (f.)",
+          "options": null,
+          "prompt_info": {
+            "direction": "Englisch → Deutsch",
+            "key_vocabulary": [
+              "einziehen (trennbar)",
+              "die Wohnung (f.)",
+              "nächste Woche"
+            ]
+          },
+          "answer_key": {
+            "answer": "Penny zieht nächste Woche in Leonards Wohnung ein.",
+            "why": "'Einziehen' is separable: zieht...ein. German uses present tense for planned future actions (no 'wird' needed here). 'In' + accusative (direction). Possessive: Leonards (no apostrophe in German).",
+            "pitfall": "Writing 'Leonard's' or 'Leonards's' with an apostrophe is an English habit. German possessives don't use apostrophes: 'Leonards Wohnung.' Also, don't forget to split the separable verb: 'zieht...ein' not 'einzieht.'",
+            "grammar_rule": "Trennbares Verb im Präsens; Genitiv-s ohne Apostroph; Präsens für geplante Zukunft"
+          }
+        },
+        {
+          "id": 45,
+          "type": "translation_en_to_de",
+          "sentence": "Raj gave his dog an expensive toy.",
+          "hint": "\"schenken\" oder \"geben\"; Dativ + Akkusativ",
+          "options": null,
+          "prompt_info": {
+            "direction": "Englisch → Deutsch",
+            "key_vocabulary": [
+              "geben/schenken (Perfekt)",
+              "Dativ + Akkusativ",
+              "teuer",
+              "das Spielzeug (n.)"
+            ]
+          },
+          "answer_key": {
+            "answer": "Raj hat seinem Hund ein teures Spielzeug gegeben/geschenkt.",
+            "why": "Perfekt with 'haben.' Dative = recipient (seinem Hund). Accusative = the thing given (ein teures Spielzeug). Both 'geben' and 'schenken' work here.",
+            "pitfall": "Mixing up dative and accusative objects: 'seinen Hund' (acc.) instead of 'seinem Hund' (dat.) is a common error. Ask: WHO receives? → dative. WHAT is received? → accusative.",
+            "grammar_rule": "Dativ (Empfänger) + Akkusativ (Geschenk); 'teuer' → 'teures' (Adj-es, neuter)"
+          }
+        },
+        {
+          "id": 46,
+          "type": "translation_de_to_en",
+          "sentence": "Ross hat sich von seiner Frau scheiden lassen, weil sie sich ständig gestritten haben.",
+          "hint": "\"sich scheiden lassen\" = to get divorced; \"sich streiten\" = to argue",
+          "options": null,
+          "prompt_info": {
+            "direction": "Deutsch → Englisch",
+            "key_vocabulary": [
+              "sich scheiden lassen",
+              "sich streiten",
+              "ständig"
+            ]
+          },
+          "answer_key": {
+            "answer": "Ross got divorced from his wife because they were constantly arguing.",
+            "why": "'Sich scheiden lassen' = to get divorced. 'Sich streiten' = to argue/fight. 'Ständig' = constantly. The 'weil' clause gives the reason.",
+            "pitfall": "Translating 'sich scheiden lassen' as 'separated' instead of 'divorced.' Separation = 'sich trennen,' divorce = 'sich scheiden lassen.' These are legally and linguistically different concepts.",
+            "grammar_rule": "sich scheiden lassen = to get divorced; weil + Nebensatz"
+          }
+        },
+        {
+          "id": 47,
+          "type": "translation_de_to_en",
+          "sentence": "Howard konnte als Kind nicht gut schwimmen, aber jetzt ist er viel besser.",
+          "hint": "\"können\" im Präteritum; Komparativ",
+          "options": null,
+          "prompt_info": {
+            "direction": "Deutsch → Englisch",
+            "key_vocabulary": [
+              "konnte (Präteritum von können)",
+              "als Kind",
+              "viel besser (Komparativ)"
+            ]
+          },
+          "answer_key": {
+            "answer": "Howard couldn't swim well as a child, but now he is much better.",
+            "why": "'Konnte' = could (past of können). 'Als Kind' = as a child. 'Viel besser' = much better (comparative).",
+            "pitfall": "Translating 'viel besser' as 'very better' instead of 'much better.' In English, comparatives use 'much' not 'very.' Also: 'als Kind' = as a child, not 'when child.'",
+            "grammar_rule": "konnte = could (past); viel + Komparativ = much + comparative"
+          }
+        },
+        {
+          "id": 48,
+          "type": "translation_de_to_en",
+          "sentence": "Phoebe hat auf der Straße ein kleines Kätzchen gefunden und es nach Hause gebracht.",
+          "hint": "\"das Kätzchen\" (n.) = kitten; zwei Perfekt-Verben",
+          "options": null,
+          "prompt_info": {
+            "direction": "Deutsch → Englisch",
+            "key_vocabulary": [
+              "das Kätzchen (n.)",
+              "finden (Perfekt)",
+              "nach Hause bringen"
+            ]
+          },
+          "answer_key": {
+            "answer": "Phoebe found a small kitten on the street and brought it home.",
+            "why": "Two Perfekt verbs: 'hat gefunden' and '(hat) gebracht.' 'Kätzchen' = kitten. 'Nach Hause' = home (direction). 'Es' refers back to das Kätzchen (neuter).",
+            "pitfall": "Translating 'nach Hause' as 'to house' instead of 'home.' 'Nach Hause' = homeward/going home. 'Zu Hause' = at home (location). This is a fixed expression, not a regular preposition + noun combination.",
+            "grammar_rule": "nach Hause = home (direction); zu Hause = at home (location)"
+          }
+        },
+        {
+          "id": 49,
+          "type": "translation_de_to_en",
+          "sentence": "Leonard muss wegen seiner Allergie jeden Tag Tabletten nehmen.",
+          "hint": "\"wegen\" + Genitiv; \"die Tablette\" (f.) = pill",
+          "options": null,
+          "prompt_info": {
+            "direction": "Deutsch → Englisch",
+            "key_vocabulary": [
+              "muss (müssen)",
+              "wegen + Genitiv",
+              "die Tablette (f.)",
+              "jeden Tag"
+            ]
+          },
+          "answer_key": {
+            "answer": "Leonard has to take pills every day because of his allergy.",
+            "why": "'Muss' = has to. 'Wegen' + genitive (seiner Allergie). 'Jeden Tag' = every day. 'Tabletten nehmen' = to take pills.",
+            "pitfall": "Translating 'wegen' as 'against' instead of 'because of.' 'Wegen' = because of/due to. 'Gegen' = against. Very different prepositions!",
+            "grammar_rule": "wegen + Genitiv = because of; muss + Infinitiv am Ende"
+          }
+        },
+        {
+          "id": 50,
+          "type": "translation_de_to_en",
+          "sentence": "Amy möchte, dass Sheldon mit ihr ins Kino geht, aber er will lieber zu Hause bleiben.",
+          "hint": "\"dass\"-Nebensatz; \"lieber\" = rather/preferably",
+          "options": null,
+          "prompt_info": {
+            "direction": "Deutsch → Englisch",
+            "key_vocabulary": [
+              "möchte, dass",
+              "ins Kino",
+              "lieber",
+              "zu Hause"
+            ]
+          },
+          "answer_key": {
+            "answer": "Amy wants Sheldon to go to the cinema with her, but he would rather stay at home.",
+            "why": "'Möchte, dass' = wants that (in English: wants someone to...). 'Ins Kino' = to the cinema. 'Lieber' = rather/preferably. 'Zu Hause' = at home.",
+            "pitfall": "Translating too literally: 'Amy would like that Sheldon goes...' is grammatically possible in English but unnatural. Use the infinitive construction: 'wants Sheldon to go.' Also: 'lieber' is the comparative of 'gern' and means 'rather' or 'preferably.'",
+            "grammar_rule": "dass-Nebensatz → English infinitive construction; lieber = comparative of gern"
+          }
+        }
+      ]
+    },
+    {
+      "teil_id": "D",
+      "teil_title": "Teil D — Satzanalyse: Fälle erkennen",
+      "teil_description": "Lies die langen Sätze und identifiziere die fett markierten Satzteile [a], [b], [c], [d]. Schreibe für jedes Element: Nominativ (N), Akkusativ (A), Dativ (D) oder Genitiv (G). Strategy: find the subject (N) first, then check prepositions and verb requirements.",
+      "question_range": "Q51–Q60",
+      "questions": [
+        {
+          "id": 51,
+          "type": "case_identification",
+          "sentence": "Gestern hat [a] Sheldon [b] seinem besten Freund Leonard [c] einen langen Vortrag über die Geschichte [d] der Quantenphysik gehalten.",
+          "hint": "4 Teile: Wer? (Subjekt) — Wem? — Was? — Wessen Geschichte?",
+          "options": null,
+          "prompt_info": {
+            "parts": {
+              "a": "Sheldon",
+              "b": "seinem besten Freund Leonard",
+              "c": "einen langen Vortrag",
+              "d": "der Quantenphysik"
+            }
+          },
+          "answer_key": {
+            "answers": {
+              "a": {
+                "case": "Nominativ",
+                "abbreviation": "N",
+                "why": "Sheldon is the subject (who held the lecture? → Nominative)."
+              },
+              "b": {
+                "case": "Dativ",
+                "abbreviation": "D",
+                "why": "'seinem besten Freund' answers 'to whom?' → Dative."
+              },
+              "c": {
+                "case": "Akkusativ",
+                "abbreviation": "A",
+                "why": "'einen langen Vortrag' is what was held → Accusative."
+              },
+              "d": {
+                "case": "Genitiv",
+                "abbreviation": "G",
+                "why": "'der Quantenphysik' answers 'whose history?' → Genitive."
+              }
+            },
+            "pitfall": "In inverted word order (verb before subject, as in 'hat Sheldon...'), the subject can appear after the verb. Don't assume the first noun is always nominative. Find WHO does the action, regardless of position.",
+            "grammar_rule": "Invertierte Wortstellung: Subjekt kann nach dem Verb stehen"
+          }
+        },
+        {
+          "id": 52,
+          "type": "case_identification",
+          "sentence": "[a] Monica hat während [b] des Abendessens [c] ihren Gästen [d] ein wunderbares Dessert serviert.",
+          "hint": "Wer serviert? — Während wessen? — Wem? — Was?",
+          "options": null,
+          "prompt_info": {
+            "parts": {
+              "a": "Monica",
+              "b": "des Abendessens",
+              "c": "ihren Gästen",
+              "d": "ein wunderbares Dessert"
+            }
+          },
+          "answer_key": {
+            "answers": {
+              "a": {
+                "case": "Nominativ",
+                "abbreviation": "N",
+                "why": "Monica = subject (who served?)."
+              },
+              "b": {
+                "case": "Genitiv",
+                "abbreviation": "G",
+                "why": "'des Abendessens' follows 'während' (genitive preposition)."
+              },
+              "c": {
+                "case": "Dativ",
+                "abbreviation": "D",
+                "why": "'ihren Gästen' = to whom she served."
+              },
+              "d": {
+                "case": "Akkusativ",
+                "abbreviation": "A",
+                "why": "'ein wunderbares Dessert' = what she served."
+              }
+            },
+            "pitfall": "Confusing [c] and [d]: students might think 'ihren Gästen' is accusative because of 'ihren.' But 'ihren' here is dative PLURAL (not accusative masculine!). In dative plural, the article for all genders is 'den/ihren' and nouns add '-n.'",
+            "grammar_rule": "Dativ Plural: ihren + Nomen-n; 'während' + Genitiv"
+          }
+        },
+        {
+          "id": 53,
+          "type": "case_identification",
+          "sentence": "Trotz [a] des schlechten Wetters ist [b] Joey zu [c] dem Casting für [d] einen neuen Film gegangen.",
+          "hint": "Trotz wessen? — Wer ist gegangen? — Wohin (zu + ?)? — Für was?",
+          "options": null,
+          "prompt_info": {
+            "parts": {
+              "a": "des schlechten Wetters",
+              "b": "Joey",
+              "c": "dem Casting",
+              "d": "einen neuen Film"
+            }
+          },
+          "answer_key": {
+            "answers": {
+              "a": {
+                "case": "Genitiv",
+                "abbreviation": "G",
+                "why": "'trotz' + genitive."
+              },
+              "b": {
+                "case": "Nominativ",
+                "abbreviation": "N",
+                "why": "Joey = subject (who went?)."
+              },
+              "c": {
+                "case": "Dativ",
+                "abbreviation": "D",
+                "why": "'zu' always takes dative."
+              },
+              "d": {
+                "case": "Akkusativ",
+                "abbreviation": "A",
+                "why": "'für' always takes accusative."
+              }
+            },
+            "pitfall": "Mixing up [c] and [d] because both follow prepositions. The key is knowing which prepositions take which case. 'Zu' = always dative. 'Für' = always accusative. Memorize your preposition lists!",
+            "grammar_rule": "'trotz' + Genitiv; 'zu' + Dativ; 'für' + Akkusativ"
+          }
+        },
+        {
+          "id": 54,
+          "type": "case_identification",
+          "sentence": "[a] Raj hat [b] der hübschen Frau an der Bar [c] einen Cocktail bestellt, aber [d] sie hat ihn ignoriert.",
+          "hint": "Wer bestellt? — Wem/für wen? — Was? — Wer hat ignoriert?",
+          "options": null,
+          "prompt_info": {
+            "parts": {
+              "a": "Raj",
+              "b": "der hübschen Frau",
+              "c": "einen Cocktail",
+              "d": "sie"
+            }
+          },
+          "answer_key": {
+            "answers": {
+              "a": {
+                "case": "Nominativ",
+                "abbreviation": "N",
+                "why": "Raj = subject of first clause."
+              },
+              "b": {
+                "case": "Dativ",
+                "abbreviation": "D",
+                "why": "'der hübschen Frau' = for whom he ordered (dative)."
+              },
+              "c": {
+                "case": "Akkusativ",
+                "abbreviation": "A",
+                "why": "'einen Cocktail' = what he ordered."
+              },
+              "d": {
+                "case": "Nominativ",
+                "abbreviation": "N",
+                "why": "'sie' = subject of second clause (she ignored him)."
+              }
+            },
+            "pitfall": "[d] is tricky because 'sie' can be accusative (her) or nominative (she). Check the clause: 'sie hat ihn ignoriert' — SHE did the ignoring, so she's the subject. 'Ihn' (him) is the accusative object here.",
+            "grammar_rule": "'sie' als Nominativ (Subjekt) vs. Akkusativ (Objekt) — Kontext entscheidet"
+          }
+        },
+        {
+          "id": 55,
+          "type": "case_identification",
+          "sentence": "Wegen [a] seiner Angst konnte [b] Howard [c] seiner Mutter [d] die Wahrheit nicht sagen.",
+          "hint": "Wegen wessen? — Wer konnte nicht? — Wem? — Was?",
+          "options": null,
+          "prompt_info": {
+            "parts": {
+              "a": "seiner Angst",
+              "b": "Howard",
+              "c": "seiner Mutter",
+              "d": "die Wahrheit"
+            }
+          },
+          "answer_key": {
+            "answers": {
+              "a": {
+                "case": "Genitiv",
+                "abbreviation": "G",
+                "why": "'wegen' + genitive."
+              },
+              "b": {
+                "case": "Nominativ",
+                "abbreviation": "N",
+                "why": "Howard = subject (who couldn't say?)."
+              },
+              "c": {
+                "case": "Dativ",
+                "abbreviation": "D",
+                "why": "'seiner Mutter' = to whom? (sagen takes dative)."
+              },
+              "d": {
+                "case": "Akkusativ",
+                "abbreviation": "A",
+                "why": "'die Wahrheit' = what couldn't he say?"
+              }
+            },
+            "pitfall": "[a] and [c] both use 'seiner' but they're different cases! 'Seiner Angst' is genitive (because of 'wegen'), while 'seiner Mutter' is dative (because of 'sagen'). Same form, different cases — feminine genitive and feminine dative look identical. Only context (the preposition or verb) tells you which is which.",
+            "grammar_rule": "Feminine Genitiv = Feminine Dativ in der Form (seiner); Kontext entscheidet"
+          }
+        },
+        {
+          "id": 56,
+          "type": "case_identification",
+          "sentence": "[a] Phoebe schenkt [b] den kleinen Kindern in der Nachbarschaft jedes Jahr zu Weihnachten [c] selbstgemachte Geschenke — das ist [d] eine schöne Tradition.",
+          "hint": "Wer schenkt? — Wem? — Was? — Was ist das? (Prädikativ = N)",
+          "options": null,
+          "prompt_info": {
+            "parts": {
+              "a": "Phoebe",
+              "b": "den kleinen Kindern",
+              "c": "selbstgemachte Geschenke",
+              "d": "eine schöne Tradition"
+            }
+          },
+          "answer_key": {
+            "answers": {
+              "a": {
+                "case": "Nominativ",
+                "abbreviation": "N",
+                "why": "Phoebe = subject."
+              },
+              "b": {
+                "case": "Dativ",
+                "abbreviation": "D",
+                "why": "'den kleinen Kindern' = to whom she gives."
+              },
+              "c": {
+                "case": "Akkusativ",
+                "abbreviation": "A",
+                "why": "'selbstgemachte Geschenke' = what she gives."
+              },
+              "d": {
+                "case": "Nominativ",
+                "abbreviation": "N",
+                "why": "'eine schöne Tradition' follows 'ist' as a predicate noun → Nominative."
+              }
+            },
+            "pitfall": "[d] catches many students. After 'sein' (to be), the complement is NOMINATIVE, not accusative. 'Das ist eine schöne Tradition' = That IS a beautiful tradition. The predicate nominative matches the subject's case.",
+            "grammar_rule": "Prädikativnominativ nach 'sein': Subjekt = Prädikativ (beide Nominativ)"
+          }
+        },
+        {
+          "id": 57,
+          "type": "case_identification",
+          "sentence": "Anstatt [a] des teuren Restaurants hat [b] Chandler [c] Monica in [d] ein kleines Café eingeladen.",
+          "hint": "Anstatt wessen? — Wer hat eingeladen? — Wen? — Wohin (in + ?)?",
+          "options": null,
+          "prompt_info": {
+            "parts": {
+              "a": "des teuren Restaurants",
+              "b": "Chandler",
+              "c": "Monica",
+              "d": "ein kleines Café"
+            }
+          },
+          "answer_key": {
+            "answers": {
+              "a": {
+                "case": "Genitiv",
+                "abbreviation": "G",
+                "why": "'anstatt' + genitive."
+              },
+              "b": {
+                "case": "Nominativ",
+                "abbreviation": "N",
+                "why": "Chandler = subject."
+              },
+              "c": {
+                "case": "Akkusativ",
+                "abbreviation": "A",
+                "why": "Monica = whom did he invite? (einladen + accusative)."
+              },
+              "d": {
+                "case": "Akkusativ",
+                "abbreviation": "A",
+                "why": "'in' + direction (where to?) = accusative."
+              }
+            },
+            "pitfall": "Both [c] and [d] are accusative, which surprises students who expect variety. But it's correct: 'einladen' takes a person in accusative, and 'in' with direction also takes accusative. Two different reasons for the same case.",
+            "grammar_rule": "'anstatt' + Genitiv; 'einladen' + Akkusativ (Person); 'in' + Akkusativ (Richtung)"
+          }
+        },
+        {
+          "id": 58,
+          "type": "case_identification",
+          "sentence": "Außerhalb [a] der Universität ist [b] Leonard [c] ein ganz normaler Typ, der [d] seine Freundin sehr liebt.",
+          "hint": "Außerhalb wessen? — Wer ist? — Was ist er? (Prädikativ = N) — Wen liebt er?",
+          "options": null,
+          "prompt_info": {
+            "parts": {
+              "a": "der Universität",
+              "b": "Leonard",
+              "c": "ein ganz normaler Typ",
+              "d": "seine Freundin"
+            }
+          },
+          "answer_key": {
+            "answers": {
+              "a": {
+                "case": "Genitiv",
+                "abbreviation": "G",
+                "why": "'außerhalb' + genitive."
+              },
+              "b": {
+                "case": "Nominativ",
+                "abbreviation": "N",
+                "why": "Leonard = subject."
+              },
+              "c": {
+                "case": "Nominativ",
+                "abbreviation": "N",
+                "why": "'ein ganz normaler Typ' = predicate nominative after 'ist.'"
+              },
+              "d": {
+                "case": "Akkusativ",
+                "abbreviation": "A",
+                "why": "'seine Freundin' = whom does he love?"
+              }
+            },
+            "pitfall": "Two nominatives in one sentence ([b] and [c]) feels wrong to students, but it's correct. After 'sein' (is/are), both the subject and the complement are nominative. Think: 'He IS a normal guy' — both refer to the same person.",
+            "grammar_rule": "Zwei Nominative: Subjekt + Prädikativnominativ nach 'sein'"
+          }
+        },
+        {
+          "id": 59,
+          "type": "case_identification",
+          "sentence": "[a] Ross hat [b] seinen Studenten [c] eine schwierige Prüfung über die Theorien [d] des berühmten Paläontologen gegeben.",
+          "hint": "Wer gibt? — Wem? — Was? — Wessen Theorien?",
+          "options": null,
+          "prompt_info": {
+            "parts": {
+              "a": "Ross",
+              "b": "seinen Studenten",
+              "c": "eine schwierige Prüfung",
+              "d": "des berühmten Paläontologen"
+            }
+          },
+          "answer_key": {
+            "answers": {
+              "a": {
+                "case": "Nominativ",
+                "abbreviation": "N",
+                "why": "Ross = subject."
+              },
+              "b": {
+                "case": "Dativ",
+                "abbreviation": "D",
+                "why": "'seinen Studenten' = to whom (geben + dative)."
+              },
+              "c": {
+                "case": "Akkusativ",
+                "abbreviation": "A",
+                "why": "'eine schwierige Prüfung' = what he gave."
+              },
+              "d": {
+                "case": "Genitiv",
+                "abbreviation": "G",
+                "why": "'des berühmten Paläontologen' = whose theories?"
+              }
+            },
+            "pitfall": "[b] 'seinen Studenten' looks accusative ('seinen' = accusative masculine, right?). BUT: 'Studenten' is plural here, and dative plural uses the same possessive form. The clue: 'geben' requires a dative recipient. Verb knowledge trumps article appearance!",
+            "grammar_rule": "'seinen' kann Akkusativ Singular ODER Dativ Plural sein — Verb entscheidet"
+          }
+        },
+        {
+          "id": 60,
+          "type": "case_identification",
+          "sentence": "Nach [a] der langen Probe bringt [b] Bernadette [c] ihrem Mann Howard [d] ein kaltes Bier mit nach Hause.",
+          "hint": "Nach wem/was? (nach + ?) — Wer bringt? — Wem? — Was?",
+          "options": null,
+          "prompt_info": {
+            "parts": {
+              "a": "der langen Probe",
+              "b": "Bernadette",
+              "c": "ihrem Mann Howard",
+              "d": "ein kaltes Bier"
+            }
+          },
+          "answer_key": {
+            "answers": {
+              "a": {
+                "case": "Dativ",
+                "abbreviation": "D",
+                "why": "'nach' + dative."
+              },
+              "b": {
+                "case": "Nominativ",
+                "abbreviation": "N",
+                "why": "Bernadette = subject."
+              },
+              "c": {
+                "case": "Dativ",
+                "abbreviation": "D",
+                "why": "'ihrem Mann Howard' = to whom she brings it."
+              },
+              "d": {
+                "case": "Akkusativ",
+                "abbreviation": "A",
+                "why": "'ein kaltes Bier' = what she brings."
+              }
+            },
+            "pitfall": "Two datives ([a] and [c]) in one sentence is perfectly fine. [a] is dative because of the preposition 'nach,' while [c] is dative because of the verb 'bringen' (bring TO someone). Different grammatical reasons, same case.",
+            "grammar_rule": "Zwei Dative möglich: Präposition 'nach' + Dativ UND Verb 'bringen' + Dativ (Empfänger)"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sprachtest — JSON-gesteuerte Prüfungsplattform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: 100%; }
+    body { background: #faf8f5; font-family: 'DM Sans', 'Segoe UI', sans-serif; color: #2d2a26; }
+    input:focus, textarea:focus { outline: none; }
+    button { font-family: inherit; -webkit-tap-highlight-color: transparent; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #d5d0c6; border-radius: 10px; }
+    @media (max-width: 640px) {
+      body { font-size: 14px; }
+    }
+  </style>
+  <script crossorigin src="https://unpkg.com/react@18.2.0/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+  <script>
+var AppBundle = (() => {
+  // ===== CONFIGURATION =====
+  // Set test duration: number of minutes per question
+  // Example: 1 = 1 minute per question, 2 = 2 minutes per question
+  const MINUTES_PER_QUESTION = 0.1;
+  // =========================
+
+  // build_app.jsx
+  var { useState, useEffect, useCallback, useRef, useMemo } = React;
+  // Mock Recharts components for now - charts will be displayed as simple HTML
+  var LineChart = () => null;
+  var Line = () => null;
+  var XAxis = () => null;
+  var YAxis = () => null;
+  var CartesianGrid = () => null;
+  var Tooltip = () => null;
+  var ResponsiveContainer = ({ children }) => children;
+  var BarChart = () => null;
+  var Bar = () => null;
+  function levenshtein(a, b) {
+    const m = a.length, n = b.length;
+    const dp = Array.from({ length: m + 1 }, () => Array(n + 1).fill(0));
+    for (let i = 0; i <= m; i++) dp[i][0] = i;
+    for (let j = 0; j <= n; j++) dp[0][j] = j;
+    for (let i = 1; i <= m; i++)
+      for (let j = 1; j <= n; j++)
+        dp[i][j] = a[i - 1] === b[j - 1] ? dp[i - 1][j - 1] : 1 + Math.min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]);
+    return dp[m][n];
+  }
+  function norm(str) {
+    return (str || "").trim().toLowerCase().replace(/\s+/g, " ").replace(/[.,!?;:"""„''—–\-]+/g, "").trim();
+  }
+  function normNoUmlaut(str) {
+    return norm(str).replace(/ä/g, "ae").replace(/ö/g, "oe").replace(/ü/g, "ue").replace(/ß/g, "ss");
+  }
+  function scoreText(correct, given) {
+    if (!given?.trim()) return 0;
+    const a = norm(correct), b = norm(given);
+    if (a === b) return 1;
+    if (normNoUmlaut(correct) === normNoUmlaut(given)) return 0.9;
+    const d = levenshtein(a, b);
+    if (d <= 1) return 1;
+    if (d <= 2) return 0.75;
+    if (d / Math.max(a.length, 1) < 0.2) return 0.5;
+    return 0;
+  }
+  var STOP_DE = /* @__PURE__ */ new Set(["der", "die", "das", "ein", "eine", "einen", "einem", "einer", "des", "dem", "den", "ist", "sind", "war", "hat", "haben", "und", "oder", "aber", "zu", "in", "auf", "an", "mit", "von", "f\xFCr", "er", "sie", "es", "ihr", "sein", "sich", "nicht"]);
+  var STOP_EN = /* @__PURE__ */ new Set(["the", "a", "an", "is", "are", "was", "were", "to", "of", "in", "on", "at", "for", "and", "but", "or", "he", "she", "it", "his", "her", "they", "them", "their", "with", "has", "had", "have", "from", "that", "this", "not"]);
+  function scoreTranslation(correct, given, keyVocab, direction) {
+    if (!given?.trim()) return 0;
+    const a = norm(correct), b = norm(given);
+    if (a === b) return 1;
+    const stops = direction === "en_to_de" ? STOP_DE : STOP_EN;
+    const tokA = a.split(/\s+/).filter((w) => !stops.has(w) && w.length > 1);
+    const tokB = b.split(/\s+/).filter((w) => !stops.has(w) && w.length > 1);
+    if (!tokA.length) return tokB.length === 0 ? 1 : 0;
+    const setA = new Set(tokA), setB = new Set(tokB);
+    let hits = 0;
+    for (const w of setA) {
+      if (setB.has(w)) {
+        hits++;
+        continue;
+      }
+      for (const w2 of setB) {
+        if (levenshtein(w, w2) <= 1) {
+          hits++;
+          break;
+        }
+      }
+    }
+    const overlap = hits / setA.size;
+    let vocabScore = 1;
+    if (keyVocab?.length) {
+      let vh = 0;
+      for (const v of keyVocab) {
+        const cv = norm(v.replace(/[()]/g, "").replace(/\+.*/g, ""));
+        if (cv.length > 2 && b.includes(cv)) {
+          vh++;
+          continue;
+        }
+        const ws = cv.split(/\s+/);
+        for (const ww of ws) {
+          if (ww.length > 2 && b.includes(ww)) {
+            vh++;
+            break;
+          }
+        }
+      }
+      vocabScore = vh / keyVocab.length;
+    }
+    const c = overlap * 0.6 + vocabScore * 0.4;
+    return c >= 0.7 ? 1 : c >= 0.45 ? 0.75 : c >= 0.3 ? 0.5 : 0;
+  }
+  function scoreCaseId(correctAnswers, userAnswers) {
+    if (!userAnswers || !correctAnswers) return 0;
+    const parts = Object.keys(correctAnswers);
+    let c = 0;
+    for (const p of parts) {
+      const exp = (correctAnswers[p].abbreviation || correctAnswers[p].case?.[0] || "").toUpperCase();
+      if (exp === (userAnswers[p] || "").toUpperCase()) c++;
+    }
+    return c / Math.max(parts.length, 1);
+  }
+  function scoreQuestion(q, ans) {
+    if (ans === void 0 || ans === null || ans === "") return 0;
+    const ak = q.answer_key;
+    if (!ak) return 0;
+    switch (q.type) {
+      case "multiple_choice":
+        return norm(ak.answer) === norm(ans) ? 1 : 0;
+      case "fill_in_the_blank":
+      case "conjugation":
+        return scoreText(ak.answer, ans);
+      case "translation_en_to_de":
+        return scoreTranslation(ak.answer, ans, q.prompt_info?.key_vocabulary, "en_to_de");
+      case "translation_de_to_en":
+        return scoreTranslation(ak.answer, ans, q.prompt_info?.key_vocabulary, "de_to_en");
+      case "case_identification":
+        return scoreCaseId(ak.answers, ans);
+      default:
+        return scoreText(ak.answer || "", typeof ans === "string" ? ans : "");
+    }
+  }
+  async function storageGet(key) {
+    try {
+      const v = localStorage.getItem(key);
+      return v ? JSON.parse(v) : null;
+    } catch {
+      return null;
+    }
+  }
+  async function storageSet(key, val) {
+    try {
+      localStorage.setItem(key, JSON.stringify(val));
+      return true;
+    } catch {
+      return false;
+    }
+  }
+  function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+  function flattenQuestions(data) {
+    if (!data?.teile) return [];
+    const out = [];
+    for (const t of data.teile) {
+      const shuffled = shuffle(t.questions || []);
+      for (const q of shuffled) {
+        out.push({ ...q, teil_id: t.teil_id, teil_title: t.teil_title });
+      }
+    }
+    return out;
+  }
+  function formatTime(s) {
+    const m = Math.floor(s / 60);
+    const ss = s % 60;
+    return `${String(m).padStart(2, "0")}:${String(ss).padStart(2, "0")}`;
+  }
+  function scoreLabel(s) {
+    if (s >= 0.9) return "Ausgezeichnet!";
+    if (s >= 0.75) return "Sehr gut!";
+    if (s >= 0.6) return "Gut";
+    if (s >= 0.4) return "Befriedigend";
+    return "Weiter \xFCben!";
+  }
+  var T = {
+    bg: "#faf8f5",
+    card: "#fffdf9",
+    cardHover: "#f5f2ed",
+    border: "#e8e4dd",
+    borderLight: "#f0ece5",
+    primary: "#5b8c7a",
+    primarySoft: "#e8f4ef",
+    primaryDark: "#3d6b59",
+    accent: "#d9884e",
+    accentSoft: "#fef5ed",
+    text: "#2d2a26",
+    textSoft: "#5d5950",
+    textFaint: "#a8a49d",
+    good: "#5b9f6d",
+    goodSoft: "#e9f7ed",
+    mid: "#d99547",
+    midSoft: "#fef8ed",
+    bad: "#d66b6b",
+    badSoft: "#fdeeed",
+    white: "#fffffe"
+  };
+  var font = "'Crimson Pro', 'Georgia', serif";
+  var fontMono = "'DM Mono', 'Consolas', monospace";
+  var fontSans = "'DM Sans', 'Segoe UI', sans-serif";
+  var radius = 12;
+  function Btn({ children, onClick, variant = "primary", disabled, style, small }) {
+    const base = {
+      padding: small ? "8px 16px" : "12px 24px",
+      borderRadius: radius,
+      border: "none",
+      fontSize: small ? 13 : 15,
+      fontWeight: 600,
+      fontFamily: fontSans,
+      cursor: disabled ? "default" : "pointer",
+      opacity: disabled ? 0.5 : 1,
+      transition: "all 0.2s",
+      display: "inline-flex",
+      alignItems: "center",
+      gap: 6
+    };
+    const variants = {
+      primary: { background: T.primary, color: T.white },
+      secondary: { background: T.primarySoft, color: T.primaryDark },
+      ghost: { background: "transparent", color: T.textSoft, border: `1.5px solid ${T.border}` },
+      danger: { background: T.badSoft, color: T.bad },
+      accent: { background: T.accentSoft, color: T.accent }
+    };
+    return /* @__PURE__ */ React.createElement("button", { onClick, disabled, style: { ...base, ...variants[variant], ...style } }, children);
+  }
+  function Badge({ children, color = T.textSoft, bg = T.borderLight }) {
+    return /* @__PURE__ */ React.createElement("span", { style: {
+      padding: "3px 10px",
+      borderRadius: 20,
+      fontSize: 11,
+      fontWeight: 700,
+      fontFamily: fontSans,
+      color,
+      background: bg,
+      letterSpacing: 0.5,
+      textTransform: "uppercase"
+    } }, children);
+  }
+  function Card({ children, style }) {
+    return /* @__PURE__ */ React.createElement("div", { style: {
+      background: T.card,
+      borderRadius: radius + 4,
+      border: `1px solid ${T.border}`,
+      boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
+      ...style
+    } }, children);
+  }
+  function WelcomeScreen({ onStart, testData, setTestData }) {
+    const [name, setName] = useState("");
+    const [mode, setMode] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [showProgress, setShowProgress] = useState(false);
+    const [progress, setProgress] = useState([]);
+    const fileRef = useRef();
+    useEffect(() => {
+      (async () => {
+        // Try to load test.json from the same directory
+        try {
+          const response = await fetch('test.json');
+          if (response.ok) {
+            const data = await response.json();
+            if (data.teile && Array.isArray(data.teile)) {
+              setTestData(data);
+              await storageSet("loaded-test-data", data);
+              setLoading(false);
+              return;
+            }
+          }
+        } catch (error) {
+          console.log('test.json not found, user needs to upload manually');
+        }
+        // If test.json not found, don't load cached data - user must upload
+        setLoading(false);
+      })();
+    }, []);
+    useEffect(() => {
+      if (name.trim()) {
+        (async () => {
+          const p = await storageGet(`progress:${name.toLowerCase().trim()}`);
+          setProgress(p || []);
+        })();
+      } else setProgress([]);
+    }, [name]);
+    const handleFile = (e) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = async (evt) => {
+        try {
+          const data = JSON.parse(evt.target.result);
+          if (!data.teile || !Array.isArray(data.teile)) {
+            alert("Invalid JSON structure: missing 'teile' array");
+            return;
+          }
+          setTestData(data);
+          await storageSet("loaded-test-data", data);
+        } catch {
+          alert("Could not parse JSON file. Please check the format.");
+        }
+      };
+      reader.readAsText(file);
+    };
+    const totalQ = testData ? flattenQuestions(testData).length : 0;
+    const canStart = name.trim() && mode && testData;
+    if (showProgress && name.trim()) {
+      return /* @__PURE__ */ React.createElement(ProgressScreen, { name, progress, onBack: () => setShowProgress(false), testData });
+    }
+    return /* @__PURE__ */ React.createElement("div", { style: { minHeight: "100vh", background: T.bg, display: "flex", alignItems: "center", justifyContent: "center", padding: 20, fontFamily: fontSans } }, /* @__PURE__ */ React.createElement("link", { href: "https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&display=swap", rel: "stylesheet" }), /* @__PURE__ */ React.createElement(Card, { style: { maxWidth: 480, width: "100%", padding: 40 } }, /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center", marginBottom: 32 } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 36, marginBottom: 8 } }, "\u{1F4DD}"), /* @__PURE__ */ React.createElement("h1", { style: { fontFamily: font, fontSize: 26, color: T.text, margin: "0 0 6px", fontWeight: 700, letterSpacing: -0.5 } }, "Sprachtest"), /* @__PURE__ */ React.createElement("p", { style: { color: T.textSoft, fontSize: 14, margin: 0 } }, "JSON-gesteuerte Pr\xFCfungsplattform")), /* @__PURE__ */ React.createElement("div", { style: { marginBottom: 24 } }, /* @__PURE__ */ React.createElement("label", { style: { display: "block", fontSize: 12, fontWeight: 600, color: T.textSoft, marginBottom: 8, textTransform: "uppercase", letterSpacing: 0.8 } }, "Testdaten"), testData ? /* @__PURE__ */ React.createElement("div", { style: { background: T.goodSoft, borderRadius: radius, padding: "14px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" } }, /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 14, fontWeight: 600, color: T.primaryDark } }, testData.test_meta?.title || "Test Loaded"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: 12, color: T.primary, marginTop: 2 } }, totalQ, " Fragen \xB7 ", testData.teile?.length, " Teile", testData.test_meta?.theme ? ` \xB7 ${testData.test_meta.theme}` : "")), /* @__PURE__ */ React.createElement(Btn, { small: true, variant: "ghost", onClick: () => fileRef.current?.click() }, "\xC4ndern")) : /* @__PURE__ */ React.createElement(
+      "div",
+      {
+        onClick: () => fileRef.current?.click(),
+        style: {
+          border: `2px dashed ${T.border}`,
+          borderRadius: radius,
+          padding: 28,
+          textAlign: "center",
+          cursor: "pointer",
+          transition: "all 0.2s",
+          background: loading ? T.borderLight : T.white
+        }
+      },
+      loading ? /* @__PURE__ */ React.createElement("div", { style: { color: T.textSoft, fontSize: 14 } }, "Lade gespeicherten Test...") : /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 28, marginBottom: 8 } }, "\u{1F4C4}"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: 14, fontWeight: 600, color: T.text } }, "JSON-Datei hochladen"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: 12, color: T.textFaint, marginTop: 4 } }, "Klicken oder Datei hierher ziehen"))
+    ), /* @__PURE__ */ React.createElement("input", { ref: fileRef, type: "file", accept: ".json", onChange: handleFile, style: { display: "none" } })), /* @__PURE__ */ React.createElement("div", { style: { marginBottom: 24 } }, /* @__PURE__ */ React.createElement("label", { style: { display: "block", fontSize: 12, fontWeight: 600, color: T.textSoft, marginBottom: 8, textTransform: "uppercase", letterSpacing: 0.8 } }, "Dein Name"), /* @__PURE__ */ React.createElement(
+      "input",
+      {
+        value: name,
+        onChange: (e) => setName(e.target.value),
+        placeholder: "z.B. Anna, Max...",
+        style: {
+          width: "100%",
+          padding: "12px 16px",
+          borderRadius: radius,
+          border: `1.5px solid ${T.border}`,
+          fontSize: 15,
+          fontFamily: fontSans,
+          color: T.text,
+          background: T.white,
+          outline: "none",
+          boxSizing: "border-box",
+          transition: "border-color 0.2s"
+        },
+        onFocus: (e) => e.target.style.borderColor = T.primary,
+        onBlur: (e) => e.target.style.borderColor = T.border
+      }
+    )), /* @__PURE__ */ React.createElement("div", { style: { marginBottom: 28 } }, /* @__PURE__ */ React.createElement("label", { style: { display: "block", fontSize: 12, fontWeight: 600, color: T.textSoft, marginBottom: 10, textTransform: "uppercase", letterSpacing: 0.8 } }, "Modus"), /* @__PURE__ */ React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 } }, [
+      { key: "test", icon: "\u{1F3AF}", label: "Pr\xFCfung", desc: "Timer \xB7 Punktestand \xB7 Keine Antworten" },
+      { key: "mock", icon: "\u{1F4D6}", label: "\xDCbung", desc: "Kein Timer \xB7 Antworten einsehbar" }
+    ].map((m) => /* @__PURE__ */ React.createElement(
+      "div",
+      {
+        key: m.key,
+        onClick: () => setMode(m.key),
+        style: {
+          padding: 16,
+          borderRadius: radius,
+          cursor: "pointer",
+          border: `1.5px solid ${mode === m.key ? T.primary : T.border}`,
+          background: mode === m.key ? T.primarySoft : T.white,
+          transition: "all 0.2s"
+        }
+      },
+      /* @__PURE__ */ React.createElement("div", { style: { fontSize: 22, marginBottom: 6 } }, m.icon),
+      /* @__PURE__ */ React.createElement("div", { style: { fontSize: 14, fontWeight: 600, color: mode === m.key ? T.primaryDark : T.text } }, m.label),
+      /* @__PURE__ */ React.createElement("div", { style: { fontSize: 11, color: T.textSoft, marginTop: 4, lineHeight: 1.4 } }, m.desc)
+    )))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: 10 } }, /* @__PURE__ */ React.createElement(Btn, { onClick: () => onStart(name.trim(), mode), disabled: !canStart, style: { flex: 1, justifyContent: "center" } }, "Test starten \u2192"), progress.length > 0 && /* @__PURE__ */ React.createElement(Btn, { variant: "accent", onClick: () => setShowProgress(true), style: { flexShrink: 0 } }, "\u{1F4CA} ", progress.length)), !testData && !loading && /* @__PURE__ */ React.createElement("p", { style: { textAlign: "center", fontSize: 12, color: T.textFaint, marginTop: 16 } }, "Bitte lade zuerst eine JSON-Testdatei hoch, um fortzufahren.")));
+  }
+  function ProgressScreen({ name, progress, onBack, testData }) {
+    if (!progress.length) return null;
+    const handleClearProgress = async () => {
+      if (confirm(`Möchtest du wirklich alle Testdaten für ${name} löschen? Diese Aktion kann nicht rückgängig gemacht werden.`)) {
+        const key = `progress:${name.toLowerCase().trim()}`;
+        await storageSet(key, []);
+        onBack();
+      }
+    };
+    const chartData = progress.map((p, i) => ({
+      attempt: `#${i + 1}`,
+      score: Math.round(p.percentage),
+      date: new Date(p.date).toLocaleDateString("de-DE", { day: "2-digit", month: "short" })
+    }));
+    const weakMap = {};
+    for (const p of progress) {
+      for (const w of p.weakAreas || []) {
+        weakMap[w] = (weakMap[w] || 0) + 1;
+      }
+    }
+    const weakSorted = Object.entries(weakMap).sort((a, b) => b[1] - a[1]).slice(0, 8);
+    const last = progress[progress.length - 1];
+    const prev = progress.length > 1 ? progress[progress.length - 2] : null;
+    const teilKeys = last.byTeil ? Object.keys(last.byTeil) : [];
+    const teilComparison = teilKeys.map((k) => ({
+      teil: `Teil ${k}`,
+      current: Math.round(last.byTeil[k].correct / Math.max(last.byTeil[k].total, 1) * 100),
+      previous: prev?.byTeil?.[k] ? Math.round(prev.byTeil[k].correct / Math.max(prev.byTeil[k].total, 1) * 100) : 0
+    }));
+    return /* @__PURE__ */ React.createElement("div", { style: { minHeight: "100vh", background: T.bg, padding: 20, fontFamily: fontSans } }, /* @__PURE__ */ React.createElement("link", { href: "https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&display=swap", rel: "stylesheet" }), /* @__PURE__ */ React.createElement("div", { style: { maxWidth: 640, margin: "0 auto" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 12, marginBottom: 28 } }, /* @__PURE__ */ React.createElement(Btn, { small: true, variant: "ghost", onClick: onBack }, "\u2190 Zur\xFCck"), /* @__PURE__ */ React.createElement("h2", { style: { fontFamily: font, fontSize: 22, color: T.text, margin: 0, flex: 1 } }, "Fortschritt \u2014 ", name), /* @__PURE__ */ React.createElement(Btn, { small: true, variant: "danger", onClick: handleClearProgress }, "\uD83D\uDDD1 L\xF6schen")), /* @__PURE__ */ React.createElement(Card, { style: { padding: 24, marginBottom: 16 } }, /* @__PURE__ */ React.createElement("h3", { style: { fontFamily: font, fontSize: 16, color: T.text, margin: "0 0 16px" } }, "Entwicklung"), /* @__PURE__ */ React.createElement(ResponsiveContainer, { width: "100%", height: 200 }, /* @__PURE__ */ React.createElement(LineChart, { data: chartData }, /* @__PURE__ */ React.createElement(CartesianGrid, { strokeDasharray: "3 3", stroke: T.borderLight }), /* @__PURE__ */ React.createElement(XAxis, { dataKey: "attempt", tick: { fontSize: 12, fill: T.textSoft }, axisLine: { stroke: T.border } }), /* @__PURE__ */ React.createElement(YAxis, { domain: [0, 100], tick: { fontSize: 12, fill: T.textSoft }, axisLine: { stroke: T.border }, unit: "%" }), /* @__PURE__ */ React.createElement(
+      Tooltip,
+      {
+        contentStyle: { borderRadius: 8, border: `1px solid ${T.border}`, fontFamily: fontSans, fontSize: 13 },
+        formatter: (v) => [`${v}%`, "Score"],
+        labelFormatter: (l, payload) => payload?.[0]?.payload?.date || l
+      }
+    ), /* @__PURE__ */ React.createElement(Line, { type: "monotone", dataKey: "score", stroke: T.primary, strokeWidth: 2.5, dot: { r: 5, fill: T.primary }, activeDot: { r: 7 } })))), teilComparison.length > 0 && /* @__PURE__ */ React.createElement(Card, { style: { padding: 24, marginBottom: 16 } }, /* @__PURE__ */ React.createElement("h3", { style: { fontFamily: font, fontSize: 16, color: T.text, margin: "0 0 16px" } }, "Vergleich nach Teil ", prev ? "(letzte 2 Versuche)" : "(letzter Versuch)"), /* @__PURE__ */ React.createElement(ResponsiveContainer, { width: "100%", height: 180 }, /* @__PURE__ */ React.createElement(BarChart, { data: teilComparison, barGap: 4 }, /* @__PURE__ */ React.createElement(CartesianGrid, { strokeDasharray: "3 3", stroke: T.borderLight }), /* @__PURE__ */ React.createElement(XAxis, { dataKey: "teil", tick: { fontSize: 12, fill: T.textSoft }, axisLine: { stroke: T.border } }), /* @__PURE__ */ React.createElement(YAxis, { domain: [0, 100], tick: { fontSize: 12, fill: T.textSoft }, axisLine: { stroke: T.border }, unit: "%" }), /* @__PURE__ */ React.createElement(Tooltip, { contentStyle: { borderRadius: 8, border: `1px solid ${T.border}`, fontFamily: fontSans, fontSize: 13 }, formatter: (v) => `${v}%` }), prev && /* @__PURE__ */ React.createElement(Bar, { dataKey: "previous", fill: T.border, radius: [4, 4, 0, 0], name: "Vorherig" }), /* @__PURE__ */ React.createElement(Bar, { dataKey: "current", fill: T.primary, radius: [4, 4, 0, 0], name: "Aktuell" })))), weakSorted.length > 0 && /* @__PURE__ */ React.createElement(Card, { style: { padding: 24, marginBottom: 16 } }, /* @__PURE__ */ React.createElement("h3", { style: { fontFamily: font, fontSize: 16, color: T.text, margin: "0 0 14px" } }, "Schwachstellen"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexWrap: "wrap", gap: 6 } }, weakSorted.map(([rule, count]) => /* @__PURE__ */ React.createElement("span", { key: rule, style: {
+      padding: "5px 12px",
+      borderRadius: 20,
+      fontSize: 12,
+      fontWeight: 500,
+      background: count >= 3 ? T.badSoft : count >= 2 ? T.midSoft : T.borderLight,
+      color: count >= 3 ? T.bad : count >= 2 ? T.mid : T.textSoft
+    } }, rule, " ", /* @__PURE__ */ React.createElement("span", { style: { opacity: 0.7 } }, "\xD7", count))))), /* @__PURE__ */ React.createElement(Card, { style: { padding: 24 } }, /* @__PURE__ */ React.createElement("h3", { style: { fontFamily: font, fontSize: 16, color: T.text, margin: "0 0 14px" } }, "Alle Versuche"), /* @__PURE__ */ React.createElement("div", { style: { overflowX: "auto" } }, /* @__PURE__ */ React.createElement("table", { style: { width: "100%", borderCollapse: "collapse", fontSize: 13 } }, /* @__PURE__ */ React.createElement("thead", null, /* @__PURE__ */ React.createElement("tr", { style: { borderBottom: `1.5px solid ${T.border}` } }, ["#", "Datum", "Modus", "Ergebnis", "%"].map((h) => /* @__PURE__ */ React.createElement("th", { key: h, style: { padding: "8px 10px", textAlign: "left", color: T.textSoft, fontWeight: 600, fontSize: 11, textTransform: "uppercase", letterSpacing: 0.5 } }, h)))), /* @__PURE__ */ React.createElement("tbody", null, [...progress].reverse().map((p, i) => /* @__PURE__ */ React.createElement("tr", { key: i, style: { borderBottom: `1px solid ${T.borderLight}` } }, /* @__PURE__ */ React.createElement("td", { style: { padding: "10px" } }, progress.length - i), /* @__PURE__ */ React.createElement("td", { style: { padding: "10px", color: T.textSoft } }, new Date(p.date).toLocaleDateString("de-DE", { day: "2-digit", month: "short", year: "numeric" })), /* @__PURE__ */ React.createElement("td", { style: { padding: "10px" } }, /* @__PURE__ */ React.createElement(Badge, { color: p.mode === "test" ? T.primaryDark : T.accent, bg: p.mode === "test" ? T.primarySoft : T.accentSoft }, p.mode === "test" ? "Pr\xFCfung" : "\xDCbung")), /* @__PURE__ */ React.createElement("td", { style: { padding: "10px", fontFamily: fontMono } }, p.score, "/", p.total), /* @__PURE__ */ React.createElement("td", { style: { padding: "10px", fontWeight: 700, color: p.percentage >= 70 ? T.good : p.percentage >= 50 ? T.mid : T.bad } }, p.percentage, "%")))))))));
+  }
+  function QuestionInput({ question, value, onChange, disabled }) {
+    switch (question.type) {
+      case "multiple_choice":
+        return /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 8 } }, (question.options || []).map((opt) => /* @__PURE__ */ React.createElement(
+          "button",
+          {
+            key: opt,
+            disabled,
+            onClick: () => onChange(opt),
+            style: {
+              padding: "13px 18px",
+              borderRadius: radius,
+              textAlign: "left",
+              cursor: disabled ? "default" : "pointer",
+              border: `1.5px solid ${value === opt ? T.primary : T.border}`,
+              background: value === opt ? T.primarySoft : T.white,
+              color: value === opt ? T.primaryDark : T.text,
+              fontSize: 15,
+              fontWeight: value === opt ? 600 : 400,
+              fontFamily: fontSans,
+              transition: "all 0.15s"
+            }
+          },
+          opt
+        )));
+      case "case_identification": {
+        const parts = question.prompt_info?.parts || {};
+        const cases = ["N", "A", "D", "G"];
+        const cur = value || {};
+        return /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 14 } }, Object.entries(parts).map(([key, text]) => /* @__PURE__ */ React.createElement("div", { key, style: { display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" } }, /* @__PURE__ */ React.createElement("span", { style: {
+          display: "inline-flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: 28,
+          height: 28,
+          borderRadius: 7,
+          background: T.primarySoft,
+          color: T.primaryDark,
+          fontWeight: 700,
+          fontSize: 13,
+          fontFamily: fontMono,
+          flexShrink: 0
+        } }, key), /* @__PURE__ */ React.createElement("span", { style: { fontSize: 14, color: T.text, flex: 1, minWidth: 100, fontStyle: "italic" } }, text), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: 4 } }, cases.map((c) => /* @__PURE__ */ React.createElement(
+          "button",
+          {
+            key: c,
+            disabled,
+            onClick: () => onChange({ ...cur, [key]: c }),
+            style: {
+              width: 38,
+              height: 38,
+              borderRadius: 8,
+              fontSize: 13,
+              fontWeight: 700,
+              fontFamily: fontMono,
+              cursor: disabled ? "default" : "pointer",
+              border: `1.5px solid ${cur[key] === c ? T.primary : T.border}`,
+              background: cur[key] === c ? T.primarySoft : T.white,
+              color: cur[key] === c ? T.primaryDark : T.textFaint,
+              transition: "all 0.15s"
+            }
+          },
+          c
+        ))))));
+      }
+      case "translation_en_to_de":
+      case "translation_de_to_en":
+        return /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { style: { marginBottom: 8 } }, /* @__PURE__ */ React.createElement(
+          Badge,
+          {
+            color: question.type.includes("en_to_de") ? T.primaryDark : T.accent,
+            bg: question.type.includes("en_to_de") ? T.primarySoft : T.accentSoft
+          },
+          question.prompt_info?.direction || (question.type.includes("en_to_de") ? "EN \u2192 DE" : "DE \u2192 EN")
+        )), /* @__PURE__ */ React.createElement(
+          "textarea",
+          {
+            value: value || "",
+            onChange: (e) => onChange(e.target.value),
+            disabled,
+            placeholder: question.type.includes("en_to_de") ? "Deine \xDCbersetzung auf Deutsch..." : "Your translation in English...",
+            rows: 3,
+            style: {
+              width: "100%",
+              padding: "12px 16px",
+              borderRadius: radius,
+              border: `1.5px solid ${T.border}`,
+              fontSize: 15,
+              fontFamily: fontSans,
+              color: T.text,
+              background: disabled ? T.borderLight : T.white,
+              resize: "vertical",
+              outline: "none",
+              boxSizing: "border-box",
+              lineHeight: 1.6
+            },
+            onFocus: (e) => {
+              if (!disabled) e.target.style.borderColor = T.primary;
+            },
+            onBlur: (e) => e.target.style.borderColor = T.border
+          }
+        ), question.prompt_info?.key_vocabulary && /* @__PURE__ */ React.createElement("div", { style: { marginTop: 8, display: "flex", flexWrap: "wrap", gap: 4 } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: 11, color: T.textFaint, marginRight: 4 } }, "Hilfe:"), question.prompt_info.key_vocabulary.map((v) => /* @__PURE__ */ React.createElement("span", { key: v, style: { fontSize: 11, color: T.textSoft, background: T.borderLight, padding: "2px 8px", borderRadius: 10 } }, v))));
+      default:
+        return /* @__PURE__ */ React.createElement("div", null, question.prompt_info && question.type === "conjugation" && /* @__PURE__ */ React.createElement("div", { style: { marginBottom: 10, display: "flex", flexWrap: "wrap", gap: 6 } }, question.prompt_info.verb && /* @__PURE__ */ React.createElement(Badge, null, question.prompt_info.verb), question.prompt_info.tense && /* @__PURE__ */ React.createElement(Badge, { color: T.accent, bg: T.accentSoft }, question.prompt_info.tense), question.prompt_info.person && /* @__PURE__ */ React.createElement(Badge, { color: T.textSoft, bg: T.borderLight }, question.prompt_info.person)), question.prompt_info && question.type === "fill_in_the_blank" && question.prompt_info.gender && /* @__PURE__ */ React.createElement("div", { style: { marginBottom: 10, display: "flex", gap: 6 } }, /* @__PURE__ */ React.createElement(Badge, null, question.prompt_info.base_form), /* @__PURE__ */ React.createElement(Badge, { color: T.accent, bg: T.accentSoft }, question.prompt_info.gender)), /* @__PURE__ */ React.createElement(
+          "input",
+          {
+            value: value || "",
+            onChange: (e) => onChange(e.target.value),
+            disabled,
+            placeholder: "Deine Antwort...",
+            style: {
+              width: "100%",
+              padding: "12px 16px",
+              borderRadius: radius,
+              border: `1.5px solid ${T.border}`,
+              fontSize: 16,
+              fontFamily: fontSans,
+              color: T.text,
+              background: disabled ? T.borderLight : T.white,
+              outline: "none",
+              boxSizing: "border-box"
+            },
+            onFocus: (e) => {
+              if (!disabled) e.target.style.borderColor = T.primary;
+            },
+            onBlur: (e) => e.target.style.borderColor = T.border
+          }
+        ));
+    }
+  }
+  function AnswerKeyDisplay({ question, userScore }) {
+    const ak = question.answer_key;
+    if (!ak) return null;
+    const scoreColor = userScore >= 0.75 ? T.good : userScore >= 0.4 ? T.mid : T.bad;
+    const scoreBg = userScore >= 0.75 ? T.goodSoft : userScore >= 0.4 ? T.midSoft : T.badSoft;
+    const correctDisplay = ak.answers ? Object.entries(ak.answers).map(([k, v]) => `[${k}] ${v.abbreviation || v.case}`).join("  ") : ak.answer;
+    return /* @__PURE__ */ React.createElement("div", { style: {
+      marginTop: 16,
+      padding: 20,
+      borderRadius: radius,
+      background: scoreBg,
+      border: `1px solid ${scoreColor}22`
+    } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 10, marginBottom: 12 } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: 18 } }, userScore >= 0.75 ? "\u2713" : userScore >= 0.4 ? "\u25D0" : "\u2717"), /* @__PURE__ */ React.createElement("span", { style: { fontWeight: 700, color: scoreColor, fontSize: 14, fontFamily: fontSans } }, userScore >= 0.75 ? "Richtig!" : userScore >= 0.4 ? "Teilweise richtig" : "Nicht ganz", /* @__PURE__ */ React.createElement("span", { style: { fontWeight: 400, opacity: 0.8, marginLeft: 6 } }, "(", Math.round(userScore * 100), "%)"))), /* @__PURE__ */ React.createElement("div", { style: { fontSize: 15, fontWeight: 700, color: T.text, marginBottom: 10, fontFamily: fontMono } }, "\u2192 ", correctDisplay), ak.why && /* @__PURE__ */ React.createElement("p", { style: { fontSize: 13, color: T.text, margin: "0 0 8px", lineHeight: 1.6, opacity: 0.85 } }, /* @__PURE__ */ React.createElement("strong", null, "Warum:"), " ", ak.why), ak.pitfall && /* @__PURE__ */ React.createElement("p", { style: { fontSize: 13, color: T.bad, margin: "0 0 8px", lineHeight: 1.6, opacity: 0.9 } }, "\u26A0 ", ak.pitfall), ak.grammar_rule && /* @__PURE__ */ React.createElement("div", { style: { marginTop: 8, padding: "8px 12px", background: `${T.white}88`, borderRadius: 8, fontSize: 12, color: T.textSoft, fontFamily: fontMono } }, "\u{1F4D0} ", ak.grammar_rule));
+  }
+  function QuestionNavOverlay({ questions, teile, currentIdx, answers, scores, onJump, onClose }) {
+    return /* @__PURE__ */ React.createElement("div", { onClick: onClose, style: {
+      position: "fixed",
+      inset: 0,
+      zIndex: 200,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      background: "rgba(0,0,0,0.2)",
+      backdropFilter: "blur(3px)"
+    } }, /* @__PURE__ */ React.createElement("div", { onClick: (e) => e.stopPropagation(), style: {
+      background: T.card,
+      borderRadius: 20,
+      padding: 28,
+      maxWidth: 500,
+      width: "92%",
+      boxShadow: "0 20px 60px rgba(0,0,0,0.12)",
+      maxHeight: "80vh",
+      overflowY: "auto"
+    } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 } }, /* @__PURE__ */ React.createElement("h3", { style: { margin: 0, fontSize: 16, fontFamily: font, color: T.text, fontWeight: 700 } }, "Fragen-\xDCbersicht"), /* @__PURE__ */ React.createElement("button", { onClick: onClose, style: { background: "none", border: "none", cursor: "pointer", color: T.textSoft, fontSize: 18, fontFamily: fontSans } }, "\u2715")), teile.map((teil) => {
+      const tQuestions = questions.filter((q) => q.teil_id === teil.teil_id);
+      return /* @__PURE__ */ React.createElement("div", { key: teil.teil_id, style: { marginBottom: 18 } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 11, fontWeight: 700, color: T.textFaint, marginBottom: 8, letterSpacing: 1, textTransform: "uppercase" } }, teil.teil_title || `Teil ${teil.teil_id}`), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexWrap: "wrap", gap: 5 } }, tQuestions.map((q) => {
+        const idx = questions.indexOf(q);
+        const isCurrent = idx === currentIdx;
+        const hasAns = answers[q.id] !== void 0 && answers[q.id] !== "" && answers[q.id] !== null;
+        const sc = scores[q.id];
+        let bg = T.bg, brd = T.border, col = T.textFaint;
+        if (isCurrent) {
+          bg = T.primary;
+          brd = T.primary;
+          col = T.white;
+        } else if (hasAns && sc !== void 0) {
+          if (sc >= 0.75) {
+            bg = T.goodSoft;
+            brd = T.good;
+            col = T.good;
+          } else if (sc >= 0.4) {
+            bg = T.midSoft;
+            brd = T.mid;
+            col = T.mid;
+          } else {
+            bg = T.badSoft;
+            brd = T.bad;
+            col = T.bad;
+          }
+        } else if (hasAns) {
+          bg = T.primarySoft;
+          brd = T.primary;
+          col = T.primary;
+        }
+        return /* @__PURE__ */ React.createElement(
+          "button",
+          {
+            key: q.id,
+            onClick: () => {
+              onJump(idx);
+              onClose();
+            },
+            style: {
+              width: 38,
+              height: 38,
+              borderRadius: 8,
+              border: `1.5px solid ${brd}`,
+              background: bg,
+              color: col,
+              fontSize: 13,
+              fontWeight: 700,
+              cursor: "pointer",
+              fontFamily: fontMono,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              transition: "all 0.15s"
+            }
+          },
+          q.id
+        );
+      })));
+    })));
+  }
+  function TestScreen({ testData, studentName, mode, onEnd }) {
+    const questions = useMemo(() => flattenQuestions(testData), [testData]);
+    const [idx, setIdx] = useState(0);
+    const [answers, setAnswers] = useState({});
+    const [scores, setScores] = useState({});
+    const [showAnswer, setShowAnswer] = useState({});
+    const [showNav, setShowNav] = useState(false);
+    const [timer, setTimer] = useState(questions.length * 60 * MINUTES_PER_QUESTION);
+    const [ended, setEnded] = useState(false);
+    const timerRef = useRef();
+    const q = questions[idx];
+    const total = questions.length;
+    const answeredCount = Object.keys(answers).filter((k) => {
+      const v = answers[k];
+      return v !== void 0 && v !== null && v !== "" && (typeof v !== "object" || Object.keys(v).length > 0);
+    }).length;
+    const setAnswer = (val) => {
+      setAnswers((prev) => ({ ...prev, [q.id]: val }));
+    };
+    const submitAnswer = () => {
+      const sc = scoreQuestion(q, answers[q.id]);
+      setScores((prev) => ({ ...prev, [q.id]: sc }));
+    };
+    const handleShowAnswer = () => {
+      submitAnswer();
+      setShowAnswer((prev) => ({ ...prev, [q.id]: true }));
+    };
+    const handleEnd = useCallback(async () => {
+      if (ended) return;
+      setEnded(true);
+      clearInterval(timerRef.current);
+      const finalScores = { ...scores };
+      for (const qq of questions) {
+        if (finalScores[qq.id] === void 0) {
+          finalScores[qq.id] = scoreQuestion(qq, answers[qq.id]);
+        }
+      }
+      const byTeil = {};
+      for (const teil of testData.teile) {
+        const tqs = questions.filter((qq) => qq.teil_id === teil.teil_id);
+        const correct = tqs.reduce((sum, qq) => sum + (finalScores[qq.id] || 0), 0);
+        byTeil[teil.teil_id] = { correct: Math.round(correct * 100) / 100, total: tqs.length };
+      }
+      const totalScore = questions.reduce((sum, qq) => sum + (finalScores[qq.id] || 0), 0);
+      const weakAreas = [];
+      for (const qq of questions) {
+        if ((finalScores[qq.id] || 0) < 0.5 && qq.answer_key?.grammar_rule) {
+          const rule = qq.answer_key.grammar_rule.split("\u2014")[0].split(";")[0].trim();
+          if (rule && !weakAreas.includes(rule)) weakAreas.push(rule);
+        }
+      }
+      const attempt = {
+        date: (/* @__PURE__ */ new Date()).toISOString(),
+        mode,
+        score: Math.round(totalScore * 100) / 100,
+        total,
+        percentage: Math.round(totalScore / total * 100),
+        byTeil,
+        weakAreas: weakAreas.slice(0, 10)
+      };
+      const key = `progress:${studentName.toLowerCase().trim()}`;
+      const history = await storageGet(key) || [];
+      history.push(attempt);
+      await storageSet(key, history);
+      onEnd({ finalScores, attempt, questions });
+    }, [ended, scores, answers, questions, testData, mode, studentName, onEnd]);
+    useEffect(() => {
+      if (mode !== "test" || ended) return;
+      const interval = setInterval(() => {
+        setTimer((t) => {
+          if (t <= 1) {
+            return 0;
+          }
+          return t - 1;
+        });
+      }, 1000);
+      timerRef.current = interval;
+      return () => clearInterval(interval);
+    }, [mode, ended]);
+    useEffect(() => {
+      if (mode === "test" && timer === 0 && !ended) {
+        handleEnd();
+      }
+    }, [timer, ended, mode, handleEnd]);
+    const runningScore = useMemo(() => {
+      return Object.values(scores).reduce((s, v) => s + v, 0);
+    }, [scores]);
+    useEffect(() => {
+      if (mode === "test" && answers[q?.id] !== void 0) {
+        const sc = scoreQuestion(q, answers[q.id]);
+        setScores((prev) => ({ ...prev, [q.id]: sc }));
+      }
+    }, [answers, q?.id, mode]);
+    if (!q) return null;
+    const isAnswered = answers[q.id] !== void 0 && answers[q.id] !== null && answers[q.id] !== "" && (typeof answers[q.id] !== "object" || Object.keys(answers[q.id]).length > 0);
+    return /* @__PURE__ */ React.createElement("div", { style: { minHeight: "100vh", background: T.bg, fontFamily: fontSans } }, /* @__PURE__ */ React.createElement("link", { href: "https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&display=swap", rel: "stylesheet" }), /* @__PURE__ */ React.createElement("div", { style: {
+      position: "sticky",
+      top: 0,
+      zIndex: 50,
+      background: `${T.bg}ee`,
+      backdropFilter: "blur(10px)",
+      borderBottom: `1px solid ${T.border}`,
+      padding: "10px 20px"
+    } }, /* @__PURE__ */ React.createElement("div", { style: { maxWidth: 640, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 10 } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: 13, fontWeight: 600, color: T.text } }, studentName), /* @__PURE__ */ React.createElement(Badge, { color: mode === "test" ? T.primaryDark : T.accent, bg: mode === "test" ? T.primarySoft : T.accentSoft }, mode === "test" ? "Pr\xFCfung" : "\xDCbung")), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 14 } }, mode === "test" && /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("span", { style: { fontSize: 13, fontFamily: fontMono, color: timer < 300 ? T.bad : T.textSoft, fontWeight: 600 } }, "\u23F1 ", formatTime(timer)), /* @__PURE__ */ React.createElement("span", { style: { fontSize: 13, fontFamily: fontMono, color: T.primary, fontWeight: 600 } }, Math.round(runningScore), "/", total)), /* @__PURE__ */ React.createElement(Btn, { small: true, variant: "danger", onClick: () => {
+      if (confirm("Test wirklich beenden? Unbeantwortete Fragen z\xE4hlen als 0.")) handleEnd();
+    } }, "Beenden")))), /* @__PURE__ */ React.createElement("div", { style: { maxWidth: 640, margin: "0 auto", padding: "24px 20px 100px" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 12, marginBottom: 20 } }, /* @__PURE__ */ React.createElement(
+      "button",
+      {
+        onClick: () => setShowNav(true),
+        style: {
+          background: T.white,
+          border: `1.5px solid ${T.border}`,
+          borderRadius: 8,
+          padding: "6px 12px",
+          cursor: "pointer",
+          fontSize: 13,
+          fontWeight: 600,
+          fontFamily: fontMono,
+          color: T.textSoft
+        }
+      },
+      idx + 1,
+      "/",
+      total
+    ), /* @__PURE__ */ React.createElement("div", { style: { flex: 1, height: 5, background: T.borderLight, borderRadius: 10, overflow: "hidden" } }, /* @__PURE__ */ React.createElement("div", { style: { height: "100%", width: `${(idx + 1) / total * 100}%`, background: T.primary, borderRadius: 10, transition: "width 0.3s" } })), /* @__PURE__ */ React.createElement("span", { style: { fontSize: 11, color: T.textFaint, whiteSpace: "nowrap" } }, answeredCount, " beantwortet")), /* @__PURE__ */ React.createElement(Badge, { color: T.textSoft, bg: T.borderLight }, q.teil_title || `Teil ${q.teil_id}`), /* @__PURE__ */ React.createElement(Card, { style: { marginTop: 12, padding: 28 } }, /* @__PURE__ */ React.createElement("p", { style: {
+      fontSize: 18,
+      lineHeight: 1.7,
+      color: T.text,
+      fontFamily: font,
+      margin: "0 0 8px",
+      fontWeight: 400
+    } }, q.sentence), q.hint && /* @__PURE__ */ React.createElement("p", { style: { fontSize: 13, color: T.textSoft, margin: "0 0 20px", fontStyle: "italic", lineHeight: 1.5 } }, "\u{1F4A1} ", q.hint), /* @__PURE__ */ React.createElement(
+      QuestionInput,
+      {
+        question: q,
+        value: answers[q.id],
+        onChange: setAnswer,
+        disabled: mode === "mock" && showAnswer[q.id]
+      }
+    ), mode === "mock" && isAnswered && !showAnswer[q.id] && /* @__PURE__ */ React.createElement("div", { style: { marginTop: 16 } }, /* @__PURE__ */ React.createElement(Btn, { variant: "accent", onClick: handleShowAnswer }, "Antwort anzeigen")), mode === "mock" && showAnswer[q.id] && /* @__PURE__ */ React.createElement(AnswerKeyDisplay, { question: q, userScore: scores[q.id] ?? 0 })), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", marginTop: 20, gap: 10 } }, /* @__PURE__ */ React.createElement(Btn, { variant: "ghost", onClick: () => setIdx(Math.max(0, idx - 1)), disabled: idx === 0 }, "\u2190 Zur\xFCck"), /* @__PURE__ */ React.createElement(Btn, { variant: "ghost", onClick: () => setShowNav(true), style: { fontSize: 13 } }, "\u2630 Alle Fragen"), idx < total - 1 ? /* @__PURE__ */ React.createElement(Btn, { variant: "secondary", onClick: () => setIdx(idx + 1) }, "Weiter \u2192") : /* @__PURE__ */ React.createElement(Btn, { onClick: () => {
+      if (confirm("Test abschlie\xDFen?")) handleEnd();
+    } }, "Abschlie\xDFen \u2713"))), showNav && /* @__PURE__ */ React.createElement(
+      QuestionNavOverlay,
+      {
+        questions,
+        teile: testData.teile,
+        currentIdx: idx,
+        answers,
+        scores,
+        onJump: setIdx,
+        onClose: () => setShowNav(false)
+      }
+    ));
+  }
+  function ResultsScreen({ result, onHome }) {
+    const { finalScores, attempt, questions } = result;
+    const pct = attempt.percentage;
+    const teilKeys = Object.keys(attempt.byTeil);
+    const teilBarData = teilKeys.map((k) => ({
+      name: `Teil ${k}`,
+      pct: Math.round(attempt.byTeil[k].correct / Math.max(attempt.byTeil[k].total, 1) * 100)
+    }));
+    return /* @__PURE__ */ React.createElement("div", { style: { minHeight: "100vh", background: T.bg, fontFamily: fontSans, padding: 20 } }, /* @__PURE__ */ React.createElement("link", { href: "https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&display=swap", rel: "stylesheet" }), /* @__PURE__ */ React.createElement("div", { style: { maxWidth: 560, margin: "0 auto", paddingTop: 20 } }, /* @__PURE__ */ React.createElement(Card, { style: { padding: 36, textAlign: "center", marginBottom: 20 } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: 48, marginBottom: 8 } }, pct >= 70 ? "\u{1F389}" : pct >= 50 ? "\u{1F44D}" : "\u{1F4AA}"), /* @__PURE__ */ React.createElement("div", { style: {
+      fontSize: 56,
+      fontWeight: 700,
+      fontFamily: font,
+      color: pct >= 70 ? T.good : pct >= 50 ? T.mid : T.bad,
+      lineHeight: 1
+    } }, pct, "%"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: 18, color: T.text, fontFamily: font, fontWeight: 600, marginTop: 8 } }, scoreLabel(pct / 100)), /* @__PURE__ */ React.createElement("div", { style: { fontSize: 14, color: T.textSoft, marginTop: 6, fontFamily: fontMono } }, attempt.score, " / ", attempt.total, " Punkte"), /* @__PURE__ */ React.createElement(Badge, { color: attempt.mode === "test" ? T.primaryDark : T.accent, bg: attempt.mode === "test" ? T.primarySoft : T.accentSoft }, attempt.mode === "test" ? "Pr\xFCfung" : "\xDCbung")), /* @__PURE__ */ React.createElement(Card, { style: { padding: 24, marginBottom: 20 } }, /* @__PURE__ */ React.createElement("h3", { style: { fontFamily: font, fontSize: 16, color: T.text, margin: "0 0 16px" } }, "Ergebnis nach Teil"), teilBarData.map((t) => /* @__PURE__ */ React.createElement("div", { key: t.name, style: { marginBottom: 14 } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", fontSize: 13, marginBottom: 4 } }, /* @__PURE__ */ React.createElement("span", { style: { fontWeight: 600, color: T.text } }, t.name), /* @__PURE__ */ React.createElement("span", { style: { fontFamily: fontMono, color: t.pct >= 70 ? T.good : t.pct >= 50 ? T.mid : T.bad, fontWeight: 700 } }, t.pct, "%")), /* @__PURE__ */ React.createElement("div", { style: { height: 8, background: T.borderLight, borderRadius: 10, overflow: "hidden" } }, /* @__PURE__ */ React.createElement("div", { style: {
+      height: "100%",
+      borderRadius: 10,
+      transition: "width 0.5s",
+      width: `${t.pct}%`,
+      background: t.pct >= 70 ? T.good : t.pct >= 50 ? T.mid : T.bad
+    } }))))), attempt.weakAreas?.length > 0 && /* @__PURE__ */ React.createElement(Card, { style: { padding: 24, marginBottom: 20 } }, /* @__PURE__ */ React.createElement("h3", { style: { fontFamily: font, fontSize: 16, color: T.text, margin: "0 0 12px" } }, "Zum Wiederholen"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexWrap: "wrap", gap: 6 } }, attempt.weakAreas.map((w) => /* @__PURE__ */ React.createElement("span", { key: w, style: {
+      padding: "5px 12px",
+      borderRadius: 20,
+      fontSize: 12,
+      fontWeight: 500,
+      background: T.midSoft,
+      color: T.mid
+    } }, w)))), /* @__PURE__ */ React.createElement(Card, { style: { padding: 24, marginBottom: 20 } }, /* @__PURE__ */ React.createElement("h3", { style: { fontFamily: font, fontSize: 16, color: T.text, margin: "0 0 14px" } }, "Alle Fragen"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 6 } }, questions.map((q) => {
+      const sc = finalScores[q.id] ?? 0;
+      return /* @__PURE__ */ React.createElement("div", { key: q.id, style: {
+        display: "flex",
+        alignItems: "center",
+        gap: 10,
+        padding: "8px 0",
+        borderBottom: `1px solid ${T.borderLight}`
+      } }, /* @__PURE__ */ React.createElement("span", { style: {
+        width: 28,
+        height: 28,
+        borderRadius: 7,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontSize: 12,
+        fontWeight: 700,
+        fontFamily: fontMono,
+        flexShrink: 0,
+        background: sc >= 0.75 ? T.goodSoft : sc >= 0.4 ? T.midSoft : T.badSoft,
+        color: sc >= 0.75 ? T.good : sc >= 0.4 ? T.mid : T.bad
+      } }, q.id), /* @__PURE__ */ React.createElement("span", { style: { flex: 1, fontSize: 13, color: T.textSoft, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" } }, q.sentence?.substring(0, 60), "..."), /* @__PURE__ */ React.createElement("span", { style: {
+        fontSize: 12,
+        fontWeight: 700,
+        fontFamily: fontMono,
+        color: sc >= 0.75 ? T.good : sc >= 0.4 ? T.mid : T.bad
+      } }, Math.round(sc * 100), "%"));
+    }))), /* @__PURE__ */ React.createElement("div", { style: { textAlign: "center", paddingBottom: 40 } }, /* @__PURE__ */ React.createElement(Btn, { onClick: onHome }, "\u2190 Zur\xFCck zur Startseite"))));
+  }
+  function App() {
+    const [screen, setScreen] = useState("welcome");
+    const [testData, setTestData] = useState(null);
+    const [studentName, setStudentName] = useState("");
+    const [mode, setMode] = useState(null);
+    const [result, setResult] = useState(null);
+    const handleStart = (name, m) => {
+      setStudentName(name);
+      setMode(m);
+      setScreen("test");
+    };
+    const handleEnd = (res) => {
+      setResult(res);
+      setScreen("results");
+    };
+    const handleHome = () => {
+      setScreen("welcome");
+      setResult(null);
+      setMode(null);
+    };
+    switch (screen) {
+      case "welcome":
+        return /* @__PURE__ */ React.createElement(WelcomeScreen, { onStart: handleStart, testData, setTestData });
+      case "test":
+        return /* @__PURE__ */ React.createElement(TestScreen, { testData, studentName, mode, onEnd: handleEnd });
+      case "results":
+        return /* @__PURE__ */ React.createElement(ResultsScreen, { result, onHome: handleHome });
+      default:
+        return /* @__PURE__ */ React.createElement(WelcomeScreen, { onStart: handleStart, testData, setTestData });
+    }
+  }
+  ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(App));
+})();
+</script></body></html>
