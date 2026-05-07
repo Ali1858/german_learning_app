@@ -64,11 +64,7 @@ var AppBundle = (() => {
     if (!given?.trim()) return 0;
     const a = norm(correct), b = norm(given);
     if (a === b) return 1;
-    if (normNoUmlaut(correct) === normNoUmlaut(given)) return 0.9;
-    const d = levenshtein(a, b);
-    if (d <= 1) return 1;
-    if (d <= 2) return 0.75;
-    if (d / Math.max(a.length, 1) < 0.2) return 0.5;
+    if (normNoUmlaut(correct) === normNoUmlaut(given)) return 1;
     return 0;
   }
   var STOP_DE = /* @__PURE__ */ new Set(["der", "die", "das", "ein", "eine", "einen", "einem", "einer", "des", "dem", "den", "ist", "sind", "war", "hat", "haben", "und", "oder", "aber", "zu", "in", "auf", "an", "mit", "von", "f\xFCr", "er", "sie", "es", "ihr", "sein", "sich", "nicht"]);
@@ -81,42 +77,31 @@ var AppBundle = (() => {
     const tokA = a.split(/\s+/).filter((w) => !stops.has(w) && w.length > 1);
     const tokB = b.split(/\s+/).filter((w) => !stops.has(w) && w.length > 1);
     if (!tokA.length) return tokB.length === 0 ? 1 : 0;
-    const setA = new Set(tokA), setB = new Set(tokB);
-    let hits = 0;
-    for (const w of setA) {
-      if (setB.has(w)) {
-        hits++;
-        continue;
-      }
-      for (const w2 of setB) {
-        if (levenshtein(w, w2) <= 1) {
-          hits++;
-          break;
+    const setB = new Set(tokB);
+    for (const w of tokA) {
+      if (w.length < 5) {
+        if (!setB.has(w)) return 0;
+      } else {
+        let found = false;
+        for (const w2 of tokB) {
+          if (w === w2 || levenshtein(w, w2) <= 1) { found = true; break; }
         }
+        if (!found) return 0;
       }
     }
-    const overlap = hits / setA.size;
-    let vocabScore = 1;
     if (keyVocab?.length) {
       let vh = 0;
       for (const v of keyVocab) {
         const cv = norm(v.replace(/[()]/g, "").replace(/\+.*/g, ""));
-        if (cv.length > 2 && b.includes(cv)) {
-          vh++;
-          continue;
-        }
+        if (cv.length > 2 && b.includes(cv)) { vh++; continue; }
         const ws = cv.split(/\s+/);
         for (const ww of ws) {
-          if (ww.length > 2 && b.includes(ww)) {
-            vh++;
-            break;
-          }
+          if (ww.length > 2 && b.includes(ww)) { vh++; break; }
         }
       }
-      vocabScore = vh / keyVocab.length;
+      if (vh < keyVocab.length) return 0;
     }
-    const c = overlap * 0.6 + vocabScore * 0.4;
-    return c >= 0.7 ? 1 : c >= 0.45 ? 0.75 : c >= 0.3 ? 0.5 : 0;
+    return 1;
   }
   function scoreCaseId(correctAnswers, userAnswers) {
     if (!userAnswers || !correctAnswers) return 0;
