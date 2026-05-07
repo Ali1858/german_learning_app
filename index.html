@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Deutsch Lernen — Startseite</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f4f8;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+      color: #1a202c;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+
+    p.subtitle {
+      color: #718096;
+      margin-bottom: 2.5rem;
+      text-align: center;
+    }
+
+    nav {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      width: 100%;
+      max-width: 420px;
+    }
+
+    a.card {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      text-decoration: none;
+      color: inherit;
+      transition: box-shadow 0.15s, transform 0.15s;
+    }
+
+    a.card:hover {
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      transform: translateY(-2px);
+    }
+
+    .icon {
+      font-size: 2rem;
+      line-height: 1;
+    }
+
+    .info strong {
+      display: block;
+      font-size: 1.05rem;
+      color: #2d3748;
+    }
+
+    .info span {
+      font-size: 0.85rem;
+      color: #718096;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Deutsch Lernen</h1>
+  <p class="subtitle">Wähle eine Übung aus</p>
+
+  <nav>
+    <a class="card" href="wortschatz_test.html">
+      <div class="icon">📚</div>
+      <div class="info">
+        <strong>Wortschatz &amp; Verben</strong>
+        <span>A1/A2 Vokabeltrainer</span>
+      </div>
+    </a>
+
+    <a class="card" href="sprachtest.html">
+      <div class="icon">🧪</div>
+      <div class="info">
+        <strong>Sprachtest</strong>
+        <span>JSON-gesteuerte Prüfungsplattform</span>
+      </div>
+    </a>
+  </nav>
+
+</body>
+</html>
