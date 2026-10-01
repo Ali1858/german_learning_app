@@ -197,6 +197,37 @@ ol.toc .tt{display:flex;flex-direction:column}ol.toc small{color:var(--muted);fo
 #drawer li a,#drawer li span.pl{display:flex;gap:10px;align-items:baseline;padding:7px 8px;border-radius:8px;text-decoration:none;color:var(--fg);font-size:15px}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .dl .sp{color:hsl(var(--h) 60% 72%)}}
 :root[data-theme="dark"] .dl .sp{color:hsl(var(--h) 60% 72%)}
+
+/* ---------- flashcards ---------- */
+#fc{position:fixed;inset:0;z-index:80;background:var(--bg);color:var(--fg);overflow-y:auto;font-family:var(--sans);padding:calc(env(safe-area-inset-top,0px) + 12px) 16px calc(env(safe-area-inset-bottom,0px) + 20px)}
+#fc[hidden]{display:none}
+#fc .fcw{max-width:560px;margin:0 auto;display:flex;flex-direction:column;min-height:calc(100vh - 40px)}
+#fc .fch{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+#fc .fch h2{font-family:var(--serif);font-size:22px;margin:0;flex:1}
+#fc .lead{color:var(--muted);font-size:15px;margin:0 0 14px}
+#fc label.sel{display:block;font-size:14px;color:var(--muted);margin:14px 0 6px}
+#fc select{width:100%;padding:10px 12px;font-size:16px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--fg)}
+#fc .chk{display:flex;gap:8px;align-items:center;font-size:15px;margin:12px 0}
+#fc .dirs{display:grid;gap:10px;margin-top:16px}
+#fc .dirb{padding:16px;font-size:17px;font-weight:700;border:1px solid var(--line);border-radius:14px;background:var(--card);color:var(--fg);cursor:pointer;text-align:left}
+#fc .dirb small{display:block;font-weight:400;color:var(--muted);font-size:14px;margin-top:2px}
+#fc .dirb:hover,#fc .dirb:focus-visible{border-color:#3b82f6;outline:none}
+#fc .prog{height:6px;background:var(--soft);border-radius:99px;overflow:hidden;margin-bottom:6px}
+#fc .prog i{display:block;height:100%;background:#3b82f6;width:0}
+#fc .meta{display:flex;justify-content:space-between;color:var(--muted);font-size:13px;margin-bottom:12px}
+#fc .card2{flex:1;min-height:260px;max-height:420px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border:1px solid var(--line);background:var(--card);border-radius:20px;padding:24px;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent}
+#fc .tagd{font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:99px;padding:1px 10px;margin-bottom:16px}
+#fc .big{font-family:var(--serif);font-size:clamp(26px,7vw,36px);line-height:1.25;word-break:break-word}
+#fc .sub2{color:var(--muted);font-size:14px;margin-top:12px}
+#fc .hint{color:var(--muted);font-size:14px;margin-top:18px}
+#fc .ans{margin-top:18px;padding-top:16px;border-top:1px dashed var(--line);width:100%}
+#fc .acts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+#fc .acts button,#fc .row2 button{padding:14px;font-size:16px;font-weight:700;border-radius:14px;border:1px solid var(--line);background:var(--card);color:var(--fg);cursor:pointer}
+#fc .acts .no{border-color:#d97706}#fc .acts .yes{border-color:#15803d}
+#fc .row2{display:grid;gap:10px;margin-top:14px}
+#fc .sum{font-size:18px;margin:10px 0 4px}
+#fc .miss{max-height:220px;overflow:auto;border:1px solid var(--line);border-radius:12px;padding:8px 12px;background:var(--card);font-size:15px;margin-top:10px}
+#fc .miss div{padding:3px 0;border-bottom:1px solid var(--soft)}
 </style>
 </head>
 <body class="">
@@ -204,6 +235,7 @@ ol.toc .tt{display:flex;flex-direction:column}ol.toc small{color:var(--muted);fo
   <div class="bar">
     <button class="btn" id="btnIndex" aria-controls="drawer">Index</button>
     <div class="ttl" id="barTitle">WG Neckarblick</div>
+    <button class="btn" id="btnFc" aria-haspopup="dialog">Flashcard</button>
     <button class="btn" id="btnDisplay" aria-expanded="true" aria-controls="panel">Display</button>
   </div>
   <div id="panel">
@@ -327,6 +359,80 @@ function reportView(){
 function route(){const h=location.hash||"#home"; const m=h.match(/^#ch(\d+)$/);
   if(m) chapterView(+m[1]); else if(h==="#report") reportView(); else if(h.startsWith("#c")&&h.includes("-p")){/* jump */} else homeView(); markDrawer();}
 function markDrawer(){document.querySelectorAll("#drawer a").forEach(a=>a.classList.toggle("on",a.getAttribute("href")===location.hash));}
+
+/* ---------- flashcards ---------- */
+const FC={el:null,deck:[],upTo:1,extra:true,queue:[],missed:[],known:0,total:0,cur:null,flipped:false,mode:"mix",round:1};
+function fcCurrent(){const m=location.hash.match(/^#ch(\d+)$/); return m?+m[1]:Math.max(...CHAPTERS.map(c=>c.n));}
+function fcDeck(upTo,extra){const seen=new Set(),d=[];
+  CHAPTERS.filter(c=>c.n<=upTo).sort((a,b)=>a.n-b.n).forEach(c=>(c.glossary||[]).forEach(g=>{
+    if(seen.has(g.lemma)||(!extra&&g.extra))return; seen.add(g.lemma);
+    d.push({lemma:g.lemma,art:g.art||"",pos:g.pos,gloss:g.gloss,forms:g.forms||[],ch:c.n});}));
+  return d;}
+function fcShuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function fcDe(w){const col=w.art==="der"?"var(--m)":w.art==="die"?"var(--f)":w.art==="das"?"var(--n)":"inherit";
+  return (w.art?`<span style="color:${col}">${w.art}</span> `:"")+esc(w.lemma);}
+function fcOpen(){
+  if(!FC.el){FC.el=document.createElement("div");FC.el.id="fc";FC.el.setAttribute("role","dialog");FC.el.setAttribute("aria-label","Flashcards");document.body.appendChild(FC.el);}
+  FC.upTo=fcCurrent(); FC.el.hidden=false; document.body.style.overflow="hidden"; fcSetup();}
+function fcClose(){FC.el.hidden=true;document.body.style.overflow="";}
+function fcSetup(){
+  const max=Math.max(...CHAPTERS.map(c=>c.n)); let opts="";
+  CHAPTERS.slice().sort((a,b)=>a.n-b.n).forEach(c=>{opts+=`<option value="${c.n}"${c.n===FC.upTo?" selected":""}>${c.n}. ${esc(c.title.de)}</option>`;});
+  FC.el.innerHTML=`<div class="fcw"><div class="fch"><h2>Flashcards</h2><button class="btn" id="fcX">Close</button></div>
+  <p class="lead">The cards use the “Neue Wörter” of the chapter you choose <b>plus all earlier chapters</b>.</p>
+  <label class="sel" for="fcCh">Up to chapter</label><select id="fcCh">${opts}</select>
+  <label class="chk"><input type="checkbox" id="fcEx"${FC.extra?" checked":""}> Include extra story words (not in the Goethe list)</label>
+  <p class="lead" id="fcN"></p>
+  <div class="dirs"><button class="dirb" data-m="ed">English → German<small>See the English, say the German</small></button>
+  <button class="dirb" data-m="de">German → English<small>See the German, say the English</small></button>
+  <button class="dirb" data-m="mix">Mix<small>Random direction for each card</small></button></div></div>`;
+  const upd=()=>{FC.upTo=+$("fcCh").value;FC.extra=$("fcEx").checked;const d=fcDeck(FC.upTo,FC.extra);$("fcN").textContent=`${d.length} words (chapters 1–${FC.upTo})`;
+    FC.el.querySelectorAll(".dirb").forEach(b=>b.disabled=!d.length);};
+  $("fcCh").onchange=upd;$("fcEx").onchange=upd;upd();$("fcX").onclick=fcClose;
+  FC.el.querySelectorAll(".dirb").forEach(b=>b.onclick=()=>fcStart(b.dataset.m));}
+function fcStart(mode,words){
+  FC.mode=mode; FC.deck=words||fcDeck(FC.upTo,FC.extra);
+  FC.queue=fcShuffle(FC.deck).map(w=>({w,dir:mode==="mix"?(Math.random()<.5?"ed":"de"):mode}));
+  FC.total=FC.queue.length; FC.known=0; FC.missed=[]; fcNext();}
+function fcNext(){
+  if(!FC.queue.length)return fcDone();
+  FC.cur=FC.queue.shift(); FC.flipped=false; fcCard();}
+function fcCard(){
+  const c=FC.cur,w=c.w,done=FC.total-FC.queue.length-1,front=c.dir==="ed"?esc(w.gloss):fcDe(w);
+  const back=c.dir==="ed"?fcDe(w):esc(w.gloss);
+  const tag=c.dir==="ed"?"English → German":"German → English";
+  const pos={v:"verb",a:"adjective"}[w.pos]||"";
+  const frontSub=c.dir==="ed"&&pos?`<div class="sub2">${pos}</div>`:"";
+  const forms=w.forms.length&&w.forms.join()!==w.lemma?`<div class="sub2">in the story: ${esc(w.forms.join(", "))}</div>`:"";
+  FC.el.innerHTML=`<div class="fcw"><div class="fch"><h2>Flashcards</h2><button class="btn" id="fcX">Close</button></div>
+  <div class="prog"><i style="width:${Math.round(done/FC.total*100)}%"></i></div>
+  <div class="meta"><span>Card ${done+1} of ${FC.total}</span><span>Known ${FC.known} · Missed ${FC.missed.length}</span></div>
+  <div class="card2" id="fcCard" tabindex="0" role="button" aria-label="Flip card"><span class="tagd">${tag}</span><div class="big">${front}</div>${frontSub}
+  ${FC.flipped?`<div class="ans"><div class="big">${back}</div>${c.dir==="ed"?forms:""}${c.dir==="de"&&w.ch?`<div class="sub2">chapter ${w.ch}</div>`:""}</div>`:`<div class="hint">Tap to show the answer</div>`}</div>
+  ${FC.flipped?`<div class="acts"><button class="no" id="fcNo">Not yet</button><button class="yes" id="fcYes">Got it</button></div>`:`<div class="row2"><button id="fcFlip">Show answer</button></div>`}</div>`;
+  $("fcX").onclick=fcClose;
+  const flip=()=>{FC.flipped=true;fcCard();}; 
+  if(FC.flipped){$("fcYes").onclick=()=>fcAnswer(true);$("fcNo").onclick=()=>fcAnswer(false);$("fcYes").focus();}
+  else{$("fcCard").onclick=flip;$("fcFlip").onclick=flip;$("fcFlip").focus();}}
+function fcAnswer(ok){if(ok)FC.known++;else FC.missed.push(FC.cur.w);fcNext();}
+function fcDone(){
+  const m=FC.missed;
+  FC.el.innerHTML=`<div class="fcw"><div class="fch"><h2>Round ${FC.round>1?FC.round:""} done</h2><button class="btn" id="fcX">Close</button></div>
+  <div class="prog"><i style="width:100%"></i></div>
+  <p class="sum"><b>${FC.known}</b> of ${FC.total} known${m.length?`, <b>${m.length}</b> to practise`:". Well done!"}</p>
+  ${m.length?`<div class="miss">${m.map(w=>`<div>${fcDe(w)} <span style="color:var(--muted)">· ${esc(w.gloss)}</span></div>`).join("")}</div>`:""}
+  <div class="row2">${m.length?`<button id="fcAgain">Practise the ${m.length} missed words</button>`:""}<button id="fcRestart">Start again with all ${FC.deck.length} words</button><button id="fcSet">Change chapter or direction</button></div></div>`;
+  $("fcX").onclick=fcClose; $("fcSet").onclick=()=>{FC.round=1;fcSetup();};
+  $("fcRestart").onclick=()=>{FC.round=1;fcStart(FC.mode);};
+  if(m.length)$("fcAgain").onclick=()=>{const all=FC.deck;FC.round++;fcStart(FC.mode,m);FC.deck=all;};}
+$("btnFc").onclick=fcOpen;
+document.addEventListener("keydown",e=>{if(!FC.el||FC.el.hidden)return;
+  if(e.key==="Escape"){fcClose();return;}
+  if(!FC.cur||!$("fcCard"))return;
+  if((e.key===" "||e.key==="Enter")&&!FC.flipped&&document.activeElement.tagName!=="SELECT"){e.preventDefault();FC.flipped=true;fcCard();}
+  else if(FC.flipped&&e.key==="ArrowRight")fcAnswer(true);
+  else if(FC.flipped&&e.key==="ArrowLeft")fcAnswer(false);});
+
 function init(){
   const L=CONFIG.layers, PRE=CONFIG.presets, tg=$("toggles"), pr=$("presets"), byKey={}; L.forEach(l=>byKey[l.key]=l);
   const setLayer=(k,on)=>{document.body.classList.toggle(byKey[k].cls,on); tg.querySelector(`[data-k="${k}"]`).setAttribute("aria-pressed",String(on));};
