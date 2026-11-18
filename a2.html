@@ -350,9 +350,9 @@ mark.ck-hit{background:rgba(250,204,21,.5);color:inherit;border-radius:0;padding
 #cm .cmlist{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:14px}
 #cm .cmload{text-align:center;padding:60px 0;font-size:18px}
 .btn[data-nocomic]{opacity:.55}
-#cmn{position:fixed;inset:0;z-index:90;background:rgba(0,0,0,.42);display:flex;align-items:flex-end;justify-content:center;padding:12px 12px calc(env(safe-area-inset-bottom,0px) + 12px)}
+#cmn{position:fixed;inset:0;z-index:90;background:rgba(0,0,0,.42);display:flex;align-items:center;justify-content:center;padding:calc(env(safe-area-inset-top,0px) + 16px) 16px calc(env(safe-area-inset-bottom,0px) + 16px)}
 #cmn[hidden]{display:none}
-#cmn .cmnb{background:#fff;color:#2a2622;width:100%;max-width:520px;max-height:80vh;overflow-y:auto;border:2px solid #2a2622;border-radius:16px;box-shadow:4px 4px 0 #2a2622;padding:12px 16px 14px;font-family:var(--sans);font-size:15.5px;line-height:1.45}
+#cmn .cmnb{background:#fff;color:#2a2622;width:100%;max-width:520px;max-height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;border:2px solid #2a2622;border-radius:16px;box-shadow:4px 4px 0 #2a2622;padding:12px 16px 14px;font-family:var(--sans);font-size:15.5px;line-height:1.45}
 #cmn .cmn1+.cmn1{border-top:1.5px dashed #c8bfae;margin-top:10px;padding-top:10px}
 #cmn .cmnp{font-family:'Comic Neue','Comic Sans MS',cursive;font-weight:700;font-size:17px;margin:0 0 6px}
 #cmn .cmnp span{background:#fff3b0;box-shadow:0 0 0 3px #fff3b0;border-radius:3px}
@@ -361,12 +361,12 @@ mark.ck-hit{background:rgba(250,204,21,.5);color:inherit;border-radius:0;padding
 #cmn .cmnx{color:#b42318;background:#fdecea;text-decoration:line-through;text-decoration-color:rgba(180,35,24,.45)}
 #cmn .cmnok{color:#15803d;background:#e8f6ec;margin-top:4px}
 #cmn .cmnwhy{margin:8px 0 0}
-#cmn .cmnh{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:#888;font-weight:700}
+#cmn .cmnh{position:sticky;top:-12px;z-index:1;background:#fff;padding:12px 0 8px;margin:-12px 0 0;display:flex;justify-content:space-between;align-items:center;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:#888;font-weight:700}
 #cmn .cmnh button{font:inherit;text-transform:none;letter-spacing:0;font-size:14px;border:1.5px solid #2a2622;border-radius:999px;background:#fff;padding:3px 12px;cursor:pointer;color:#2a2622}
 #cm [data-note]{cursor:pointer}
-#cmg{position:fixed;inset:0;z-index:90;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:16px;cursor:pointer}
+#cmg{position:fixed;inset:0;z-index:90;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:calc(env(safe-area-inset-top,0px) + 16px) 16px calc(env(safe-area-inset-bottom,0px) + 16px);cursor:pointer}
 #cmg[hidden]{display:none}
-#cmg .cmgb{background:#fff;border:2px solid #2a2622;border-radius:14px;box-shadow:4px 4px 0 #2a2622;width:100%;max-width:520px;overflow:hidden;text-align:center;font-family:'Comic Neue','Comic Sans MS',cursive}
+#cmg .cmgb{background:#fff;border:2px solid #2a2622;border-radius:14px;box-shadow:4px 4px 0 #2a2622;width:100%;max-width:520px;max-height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;text-align:center;font-family:'Comic Neue','Comic Sans MS',cursive}
 #cmg svg{display:block;width:100%;height:auto;background:#f4f4f4;border-bottom:2px solid #2a2622}
 #cmg p{margin:10px 12px 2px;font-size:20px}#cmg p b{color:#1e4f9a}#cmg p span{color:#666;font-size:17px}
 #cmg small{display:block;color:#999;font-size:12.5px;margin:0 0 10px}
